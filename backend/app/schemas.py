@@ -5,8 +5,8 @@ class UserBase(BaseModel):
     alias_type: str  # hacer que solo pueda de lo tipos validos
     password: str
     name: str
-    CUIT: str
-    CBU: str
+    cuit: str
+    cbu: str
     bank_id: str
 
 
