@@ -1,5 +1,5 @@
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from ..models import User, LinkedEntity
+from ..models import User
 
 
 def create(user, db):
