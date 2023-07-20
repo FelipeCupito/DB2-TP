@@ -7,6 +7,6 @@ from ..database import get_db
 router = APIRouter()
 
 
-@router.post("/", response_model=Bank)
-def create_bank(bank: Bank, db: Session = Depends(get_db)):
-    return banks_dao.create(bank, db)
+@router.post("/bank", response_model=Bank)
+def create_bank(name: str, port: str, db: Session = Depends(get_db)):
+    return banks_dao.create(name, port, db)
