@@ -1,16 +1,16 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, CHAR, ARRAY, TEXT
+from datetime import datetime
+from sqlalchemy import Column, String, Float, DateTime, TEXT
 from sqlalchemy import ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
-from database import Base
-from datetime import datetime
+
+from database import Base, engine
 
 
 class User(Base):
     __tablename__ = "users"
     _id = Column(String, primary_key=True, unique=True)
     alias_type = Column(String)
-    password = Column(PasswordType(schemes=['pbkdf2_sha256']))
+    password = Column("Password", TEXT, nullable=False)
     name = Column(String)
     cuit = Column(String)
     cbu = Column(String)

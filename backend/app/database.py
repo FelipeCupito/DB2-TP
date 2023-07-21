@@ -1,14 +1,14 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.ext.declarative import declarative_base
-from config import settings
+from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = settings.db_url
+from backend.app.config import settings
+
+SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOSTNAME}:{settings.DATABASE_PORT}/{settings.POSTGRES_DB}"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
-    echo=True,
-    connect_args={'check_same_thread': False}
+    echo=False,
 )
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -16,6 +16,10 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 Base = declarative_base()
+
+inspector = inspect(engine)
+# Check if database's FinancialEntity table needs to be populated
+shouldInsertFEInfo = not inspector.has_table('FinancialEntity')
 
 
 def get_db():
