@@ -8,7 +8,7 @@ from config import settings
 app = FastAPI()
 
 # crea la base de datos
-models.Base.metadata.create_all(bind=engine)
+# models.Base.metadata.create_all(bind=engine)
 
 
 app.include_router(banks.router, prefix='/banks', tags=["banks"])

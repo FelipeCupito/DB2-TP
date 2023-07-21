@@ -6,6 +6,15 @@ from sqlalchemy.dialects.postgresql import UUID
 from database import Base, engine
 
 
+class Bank(Base):
+    __tablename__ = "banks"
+    _id = Column(UUID(as_uuid=True), primary_key=True, unique=True)
+    name = Column(String)
+    port = Column(String)
+
+    __table_args__ = {'extend_existing': True}
+
+
 class User(Base):
     __tablename__ = "users"
     _id = Column(String, primary_key=True, unique=True)
@@ -16,12 +25,7 @@ class User(Base):
     cbu = Column(String)
     bank_id = Column(ForeignKey("banks._id"))
 
-
-class Bank(Base):
-    __tablename__ = "banks"
-    _id = Column(UUID(as_uuid=True), primary_key=True, unique=True)
-    name = Column(String)
-    port = Column(String)
+    __table_args__ = {'extend_existing': True}
 
 
 class Transaction(Base):
@@ -31,3 +35,8 @@ class Transaction(Base):
     from_alias_id = Column(ForeignKey("users._id"))
     to_alias_id = Column(ForeignKey("users._id"))
     amount = Column(Float)
+
+    __table_args__ = {'extend_existing': True}
+
+
+Base.metadata.create_all(bind=engine)
