@@ -1,4 +1,3 @@
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from ..models import User
 
 
