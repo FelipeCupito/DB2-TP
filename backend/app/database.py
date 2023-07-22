@@ -21,16 +21,18 @@ inspector = inspect(engine)
 
 shouldPopulate = not inspector.has_table('Users')
 
+
 class User(Base):
     __tablename__ = "Users"
     name = Column(String, nullable=False)
-    birthday = Column(Date)
+    birthday = Column(String)
     genre = Column(String)
     cuit = Column(String, unique=True, nullable=False)
     cbu = Column(String, primary_key=True, unique=True, nullable=False)
     phone = Column(String, unique=True)
     email = Column(String, unique=True)
     balance = Column(Float, nullable=False)
+
 
 def get_db():
     db = SessionLocal()
@@ -43,10 +45,7 @@ def get_db():
 def populate_db():
     db = SessionLocal()
     info = []
-
-    info.append(User(cbu="0004239328123719132482", accountType=1, name="Agustin Mattiussi",
-                                email="amattiussi@itba.edu.ar", password=hash_password("pass123"), cuit="20-43084142-5",
-                                phoneNumber="+54 911 3896-0800", balance=50000.00))
+    info.append(User(name="Malena Vasquez", birthday="16/10/1999", genre="F", cuit="27421942256", cbu="10500250", phone="1153145294", email="mavasquez@itba.edu.ar", balance=50000))
 
     for i in info:
         db.add(i)
@@ -58,9 +57,11 @@ def populate_db():
 
 def create_db():
     Base.metadata.create_all(engine)
-
-    if (shouldPopulate):
+    if shouldPopulate:
+        print("populated")
         populate_db()
+    else:
+        print("not populated")
 
 
-create_db()
+

@@ -12,6 +12,6 @@ def get_user_info(cbu: str, db: Session = Depends(get_db)):
     return users_dao.get_info(cbu, db)
 
 
-@router.get("/{cbu}/balance", response_model=UserBase)
+@router.get("/{cbu}/balance", response_model=float)
 def get_user_balance(cbu: str, db: Session = Depends(get_db)):
     return users_dao.get_balance(cbu, db)

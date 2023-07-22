@@ -6,4 +6,5 @@ def get_info(cbu, db):
 
 
 def get_balance(cbu, db):
-    return db.query(User).filter(User.cbu == cbu).first().balance
+    user = db.query(User).filter(User.cbu == cbu).first()
+    return user.balance
