@@ -1,31 +1,29 @@
-from sqlalchemy import create_engine, inspect
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
+from pymongo import MongoClient
 from backend.app.config import settings
 
-SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOSTNAME}:{settings.DATABASE_PORT}/{settings.POSTGRES_DB}"
+COLLECTIONS_NAME = ["users", "transactions", "banks_accounts"]
+DATABASE_URL = f"mongodb://{settings.MONGO_USERNAME}:{settings.MONGO_PASSWORD}@{settings.MONGO_DB_HOSTNAME}:{settings.DATABASE_PORT}"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    echo=False,
-)
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
-)
-
-Base = declarative_base()
-
-inspector = inspect(engine)
-# Check if database's FinancialEntity table needs to be populated
-shouldInsertFEInfo = not inspector.has_table('FinancialEntity')
+client = MongoClient(DATABASE_URL)
+db = client[settings.MONGO_DB_DBNAME]
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+def _populate_db():
+    # TODO: implement
+    pass
+
+
+def _create_collections_if_not_exists():
+    """Create all collections if they don't exist."""
+    for collection in COLLECTIONS_NAME:
+        if collection not in db.list_collection_names():
+            db.create_collection(collection)
+
+
+# Initialize DB
+_create_collections_if_not_exists()
+_populate_db()
+
+user_collection = db["users"]
+transactions_collection = db["transactions"]
+banks_accounts_collection = db["banks_accounts"]

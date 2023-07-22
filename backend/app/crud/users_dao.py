@@ -1,22 +1,33 @@
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from ..models import User
+from typing import Optional
+from backend.app.models import User, AliasType
+from backend.app.database import user_collection as db
 
 
-def create(user, db):
-    try:
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-    except IntegrityError as error:
-        raise error
-    except SQLAlchemyError as error:
-        raise error
-    return user
+def get_by_cbu(cbu: str) -> Optional[User]:
+    user = db.find_one({'cbu': cbu})
+    if user is None:
+        return None
+    return User(**user)
 
 
-def get_by_cbu(cbu, db):
-    return db.query(User).filter(User.cbu == cbu).first()
+def get_by_alias(alias_type: AliasType, alias: str) -> Optional[User]:
+    user = db.find_one({alias_type.value: alias})
+    if user is None:
+        return None
+    return User(**user)
 
 
-def get_by_alias(alias_type, db):
-    return db.query(User).filter(User.alias_type == alias_type).first()
+def create(user: User) -> Optional[User]:
+    # TODO: Check if user already exists
+    user_data = user.model_dump()
+    result = db.insert_one(user_data)
+    if result.acknowledged:
+        user_data.update({"_id": str(result.inserted_id)})
+        user = User(**user_data)
+        return user
+    return None
+
+
+def delete(cbu: str) -> bool:
+    result = db.Users.delete_one({'cbu': cbu})
+    return result.deleted_count > 0

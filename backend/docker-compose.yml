@@ -17,8 +17,9 @@ services:
     image: mongo:latest
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mysecretpassword
+      MONGO_INITDB_DATABASE: pixie
     ports:
       - "27017:27017"
     volumes:

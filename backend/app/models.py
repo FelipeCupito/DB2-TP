@@ -1,42 +1,64 @@
-from datetime import datetime
-from sqlalchemy import Column, String, Float, DateTime, TEXT
-from sqlalchemy import ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+from typing import Optional, Any
 
-from database import Base, engine
-
-
-class Bank(Base):
-    __tablename__ = "banks"
-    _id = Column(UUID(as_uuid=True), primary_key=True, unique=True)
-    name = Column(String)
-    port = Column(String)
-
-    __table_args__ = {'extend_existing': True}
+from bson import ObjectId
+from pydantic import BaseModel
+from enum import Enum
 
 
-class User(Base):
-    __tablename__ = "users"
-    _id = Column(String, primary_key=True, unique=True)
-    alias_type = Column(String)
-    password = Column("Password", TEXT, nullable=False)
-    name = Column(String)
-    cuit = Column(String)
-    cbu = Column(String)
-    bank_id = Column(ForeignKey("banks._id"))
-
-    __table_args__ = {'extend_existing': True}
+class AliasType(str, Enum):
+    CUIT = "cuit"
+    CBU = "cbu"
+    ID = "_id"
 
 
-class Transaction(Base):
-    __tablename__ = "transactions"
-    _id = Column(UUID(as_uuid=True), primary_key=True)
-    date = Column(DateTime, default=datetime.utcnow)
-    from_alias_id = Column(ForeignKey("users._id"))
-    to_alias_id = Column(ForeignKey("users._id"))
-    amount = Column(Float)
+class User(BaseModel):
+    _id: str
+    alias_type: AliasType
+    password: str
+    name: str
+    cuit: str
+    cbu: str
+    bank_id: str
 
-    __table_args__ = {'extend_existing': True}
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "alias_type": "cbu",
+                "password": "myPass",
+                "name": "Pepe",
+                "cuit": "dldldd",
+                "cbu": "1234123",
+                "bank_id": "1",
+            }
+        }
 
 
-Base.metadata.create_all(bind=engine)
+class Bank(BaseModel):
+    _id: str
+    name: str
+    port: str
+
+
+class Transaction(BaseModel):
+    _id: str
+    date: str
+    from_alias_id: str
+    to_alias_id: str
+    amount: int
+
+
+class Response(BaseModel):
+    status_code: int
+    response_type: str
+    description: str
+    data: Optional[Any]
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "status_code": 200,
+                "response_type": "success",
+                "description": "Operation successful",
+                "data": "Sample data",
+            }
+        }

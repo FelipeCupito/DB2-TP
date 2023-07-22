@@ -1,12 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from backend.app.crud import banks_dao
-from backend.app.schemas import Bank
-from sqlalchemy.orm import Session
-from ..database import get_db
+
+from backend.app.models import Bank
 
 router = APIRouter()
 
 
 @router.post("/bank", response_model=Bank)
-def create_bank(name: str, port: str, db: Session = Depends(get_db)):
-    return banks_dao.create(name, port, db)
+def create_bank(name: str, port: str):
+    return banks_dao.create(name, port)
