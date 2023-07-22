@@ -1,11 +1,11 @@
-import datetime
+from datetime import datetime
 from typing import Optional, Any
 from pydantic import BaseModel
 from backend.app.models import User
 
 
 class AliasTransaction(BaseModel):
-    date: datetime = datetime.datetime.now()
+    date: datetime = datetime.now()
     from_alias: str
     to_alias: str
     amount: int
@@ -21,7 +21,7 @@ class AliasTransaction(BaseModel):
 
 
 class CbuTransaction(BaseModel):
-    date: datetime = datetime.datetime.now()
+    date: datetime = datetime.now()
     from_cbu: str
     to_cbu: str
     amount: int

@@ -3,7 +3,7 @@ from typing import Any
 from backend.app.schemas import Response
 
 
-def _send_error(msg: str) -> Response:
+def send_error(msg: str) -> Response:
     return Response(
         status_code=404,
         response_type="error",
@@ -12,7 +12,7 @@ def _send_error(msg: str) -> Response:
     )
 
 
-def _send_data(data: Any) -> Response:
+def send_data(data: Any) -> Response:
     return Response(
         status_code=200,
         response_type="success",

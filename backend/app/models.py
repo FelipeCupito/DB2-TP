@@ -1,5 +1,4 @@
-import datetime
-from typing import Optional, Any
+from datetime import datetime
 
 from pydantic import BaseModel, model_validator
 from enum import Enum
@@ -83,7 +82,7 @@ class Bank(BaseModel):
 
 class Transaction(BaseModel):
     _id: str
-    date: datetime = datetime.datetime.now()
+    date: datetime = datetime.now()
     from_id: str
     to_id: str
     amount: int
