@@ -10,15 +10,14 @@ def get_by_cbu(cbu: str) -> Optional[User]:
     return User(**user)
 
 
-def get_by_alias(alias_type: AliasType, alias: str) -> Optional[User]:
-    user = db.find_one({alias_type.value: alias})
+def get_by_alias(alias: str) -> Optional[User]:
+    user = db.find_one({'alias': alias})
     if user is None:
         return None
     return User(**user)
 
 
 def create(user: User) -> Optional[User]:
-    # TODO: Check if user already exists
     user_data = user.model_dump()
     result = db.insert_one(user_data)
     if result.acknowledged:
@@ -31,3 +30,11 @@ def create(user: User) -> Optional[User]:
 def delete(cbu: str) -> bool:
     result = db.Users.delete_one({'cbu': cbu})
     return result.deleted_count > 0
+
+
+def check_cbu(user: User) -> bool:
+    return get_by_cbu(user.cbu) is not None
+
+
+def check_alias(alias: str) -> bool:
+    return get_by_alias(alias) is not None
