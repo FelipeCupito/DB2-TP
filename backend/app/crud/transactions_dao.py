@@ -1,20 +1,29 @@
-from decimal import Decimal
+from sqlalchemy.exc import SQLAlchemyError
 
-from sqlalchemy.orm import Session
-
-from backend.app.models import User
+from backend.app.database import User
 
 
-def modify_balance_by_cbu(cbu, amount, db: Session):
+def pay(cbu, amount, db):
     user = db.query(User).filter(User.cbu == cbu).first()
-    user.balance += Decimal(amount)
+    user.balance -= amount
+
+    try:
+        db.commit()
+        db.refresh(user)
+    except SQLAlchemyError:
+        raise
+
+    return user.balance
 
 
-def pay_by_cbu(from_cbu, to_cbu, amount, db):
-    modify_balance_by_cbu(from_cbu, -amount, db)
-    modify_balance_by_cbu(to_cbu, amount, db)
-    return None
+def charge(cbu, amount, db):
+    user = db.query(User).filter(User.cbu == cbu).first()
+    user.balance += amount
 
+    try:
+        db.commit()
+        db.refresh(user)
+    except SQLAlchemyError:
+        raise
 
-def pay_by_alias(from_alias, to_alias, amount, db):
-    return None
+    return user.balance
