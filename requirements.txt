@@ -1,4 +1,6 @@
-uvicorn>=0.22.0
+uvicorn==0.23.1
 fastapi>=0.100.0
-pydantic==2.0.2
-SQLAlchemy==2.0.18
+pydantic[all]==2.0.3
+SQLAlchemy==2.0.19
+psycopg2==2.9.6
+pydantic_extra_types==2.0.0
