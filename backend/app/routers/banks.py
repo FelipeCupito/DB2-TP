@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 from backend.app.crud import banks_dao
 
-from backend.app.models import Bank, Response
+from backend.app.models import Bank
 from backend.app.routers.utils import _send_error, _send_data
+from backend.app.schemas import Response
 
 router = APIRouter()
 

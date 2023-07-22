@@ -1,6 +1,6 @@
 from typing import Any
 
-from backend.app.models import Response
+from backend.app.schemas import Response
 
 
 def _send_error(msg: str) -> Response:

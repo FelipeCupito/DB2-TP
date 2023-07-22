@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional, Any
 
 from pydantic import BaseModel, model_validator
@@ -82,24 +83,8 @@ class Bank(BaseModel):
 
 class Transaction(BaseModel):
     _id: str
-    date: str
-    from_alias_id: str
-    to_alias_id: str
+    date: datetime = datetime.datetime.now()
+    from_id: str
+    to_id: str
     amount: int
 
-
-class Response(BaseModel):
-    status_code: int
-    response_type: str
-    description: str
-    data: Optional[Any]
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "status_code": 200,
-                "response_type": "success",
-                "description": "Operation successful",
-                "data": "Sample data",
-            }
-        }
