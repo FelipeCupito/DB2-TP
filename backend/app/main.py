@@ -1,10 +1,9 @@
 import uvicorn
 from fastapi import FastAPI
-from backend.app.routers import banks, transactions, users
+from backend.app.routers import transactions, users
 
 app = FastAPI()
 
-# app.include_router(banks.router, prefix='/banks', tags=["banks"])
 app.include_router(transactions.router, prefix='/transactions', tags=["transactions"])
 app.include_router(users.router, prefix='/users', tags=["users"])
 

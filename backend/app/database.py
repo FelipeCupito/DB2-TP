@@ -17,11 +17,12 @@ SessionLocal = sessionmaker(
 )
 
 Base = declarative_base()
-
 inspector = inspect(engine)
-# Check if database's FinancialEntity table needs to be populated
-shouldInsertFEInfo = not inspector.has_table('FinancialEntity')
 
+shouldPopulate = not inspector.has_table('Users')
+
+
+## POPULATE!!
 
 def get_db():
     db = SessionLocal()

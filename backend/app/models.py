@@ -1,11 +1,9 @@
 from sqlalchemy import Column, String, Float, Date
-from sqlalchemy import ForeignKey
-
 from database import Base, engine
 
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "Users"
     name = Column(String, nullable=False)
     birthday = Column(Date)
     genre = Column(String)
@@ -15,7 +13,7 @@ class User(Base):
     email = Column(String, unique=True)
     balance = Column(Float, nullable=False)
 
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
 
 
 Base.metadata.create_all(bind=engine)
