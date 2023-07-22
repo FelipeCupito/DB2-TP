@@ -1,5 +1,5 @@
 from typing import Optional
-from backend.app.models import User, AliasType
+from backend.app.models import User
 from backend.app.database import user_collection as db
 
 

@@ -1,6 +1,6 @@
 from typing import Optional, Any
 
-from pydantic import BaseModel, field_validator, model_validator
+from pydantic import BaseModel, model_validator
 from enum import Enum
 
 
@@ -59,7 +59,25 @@ class User(BaseModel):
 class Bank(BaseModel):
     _id: str
     name: str
-    port: str
+    port: int
+
+    @model_validator(mode='after')
+    def port_validation(self) -> 'Bank':
+        port = self.port
+        if port is None:
+            raise ValueError("Port debe ser asignado antes de validar")
+
+        if port < 1023 or port > 65535:
+            raise ValueError("Port debe estar entre 0 y 65535")
+        return self
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "name": "Banco Santander",
+                "port": "http://localhost:8000",
+            }
+        }
 
 
 class Transaction(BaseModel):

@@ -1,18 +1,6 @@
 version: "3"
 
 services:
-  postgres:
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: pixie
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres:/data/postgres
-    restart: always
-
   mongo_4983:
     image: mongo:latest
     restart: always
