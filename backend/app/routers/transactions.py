@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 
 from backend.app.crud import transactions_dao
 from ..database import get_db
-from ..schemas import UserBase
 
 router = APIRouter()
 
