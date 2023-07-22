@@ -12,9 +12,3 @@ class UserBase(BaseModel):
     balance: float
 
 
-class Transaction(BaseModel):
-    date: str
-    from_alias: str
-    to_alias: str
-    amount: float
-
