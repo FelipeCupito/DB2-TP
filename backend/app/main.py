@@ -1,9 +1,6 @@
-from fastapi import FastAPI
-import models
-from backend.app.routers import banks, transactions, users
-from database import engine
 import uvicorn
-from config import settings
+from fastapi import FastAPI
+from backend.app.routers import banks, transactions, users
 
 app = FastAPI()
 
