@@ -1,6 +1,7 @@
 uvicorn==0.23.1
 fastapi>=0.100.0
-pydantic[all]==2.0.3
 SQLAlchemy==2.0.19
 psycopg2==2.9.6
 pydantic_extra_types==2.0.0
+pydantic[dotenv,email]==2.0.3
+pydantic_settings

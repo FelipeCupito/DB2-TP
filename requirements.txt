@@ -1,8 +1,0 @@
-uvicorn==0.23.1
-fastapi>=0.100.0
-pydantic[all]==2.0.3
-SQLAlchemy==2.0.19
-psycopg2==2.9.6
-pydantic_extra_types==2.0.0
-streamlit~=1.25.0
-requests~=2.31.0

@@ -1,9 +1,9 @@
-from pydantic.v1 import BaseSettings
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str
-    DATABASE_PORT: int
+    HOST: str
+
     POSTGRES_PASSWORD: str
     POSTGRES_USER: str
     POSTGRES_DB: str
@@ -12,7 +12,7 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive = True
-        env_file = "../.env"
+        env_file = ".env"
 
 
 settings = Settings()

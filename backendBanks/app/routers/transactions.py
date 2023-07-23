@@ -20,6 +20,7 @@ def pay(cbu: str, amount: float, db: Session = Depends(get_db)):
     except HTTPException:
         raise
 
+
 @router.post("/{cbu}/charge", response_model=float)
 def charge(cbu: str, amount: float, db: Session = Depends(get_db)):
     try:

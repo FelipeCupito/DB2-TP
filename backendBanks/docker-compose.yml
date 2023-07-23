@@ -3,39 +3,16 @@ version: "3"
 services:
   postgres_1:
     image: postgres
+    container_name: bank_container
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: bank_1
+      POSTGRES_DB: bank
     ports:
       - "5432:5432"
     volumes:
       - postgres:/data/postgres
     restart: always
 
-  postgres_2:
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: bank_2
-    ports:
-      - "5433:5433"
-    volumes:
-      - postgres:/data/postgres
-    restart: always
-
-  mongo_4983:
-    image: mongo:latest
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodata:/data/db
-
 volumes:
-  mongodata:
   postgres:

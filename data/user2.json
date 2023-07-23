@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "name": "Lucia Martinez",
+      "birthday": "12/07/1998",
+      "genre": "F",
+      "cuit": "27441737251",
+      "cbu": "1050055025489573154848",
+      "phone": "1168325648",
+      "email": "luciamartinez@gmail.com",
+      "balance": 45000
+    },
+    {
+      "name": "Maximiliano Perez",
+      "birthday": "05/03/1995",
+      "genre": "M",
+      "cuit": "27500676437",
+      "cbu": "1112222398765432154898",
+      "phone": "1157502389",
+      "email": "maxiperez@gmail.com",
+      "balance": 55000
+    },
+    {
+      "name": "Ana Sanchez",
+      "birthday": "20/11/1997",
+      "genre": "F",
+      "cuit": "27457262237",
+      "cbu": "1050014098765467154847",
+      "phone": "1165497832",
+      "email": "anasanchez@gmail.com",
+      "balance": 52000
+    },
+    {
+      "name": "Sebastian Rodriguez",
+      "birthday": "14/02/1996",
+      "genre": "M",
+      "cuit": "27500346789",
+      "cbu": "1112222367876542154867",
+      "phone": "1158672945",
+      "email": "sebastianrodriguez@gmail.com",
+      "balance": 48000
+    }
+  ]
+}
