@@ -7,9 +7,22 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: bank
+      POSTGRES_DB: bank_1
     ports:
       - "5432:5432"
+    volumes:
+      - postgres:/data/postgres
+    restart: always
+
+  postgres_2:
+    image: postgres
+    container_name: bank_container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: bank_2
+    ports:
+      - "5432:5433"
     volumes:
       - postgres:/data/postgres
     restart: always

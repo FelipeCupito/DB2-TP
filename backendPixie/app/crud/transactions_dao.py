@@ -31,6 +31,7 @@ def get_user_history(cbu: str) -> list[TransactionHistory]:
     to_return = []
     sjsj = db.find({'from_cbu': cbu})
     for transaction in sjsj:
+        # TODO: que no se vea los datos sensibles de los usuarios
         from_user = users_dao.get_by_cbu(transaction['from_cbu'])
         to_user = users_dao.get_by_cbu(transaction['to_cbu'])
         to_return.append(

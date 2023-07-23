@@ -1,39 +1,22 @@
 #!/bin/bash
 
-# Número de instancias a ejecutar
-instances=5
+# Detener y eliminar contenedores así como volúmenes
+docker-compose down -v
 
-# Puerto inicial
-start_port=5433
+# Iniciar contenedores para PostgreSQL
+docker-compose up -d
+# Container name para banco 1: bank_container_1
+# Container name para banco 2: bank_container_2
 
-for (( instance=1; instance<=$instances; instance++ ))
-do
-    port=$(($start_port + $instance - 1))
-    compose_file=${compose_location}docker-compose-${port}.yml
-
-    # Generar archivo docker-compose.yml
-    /bin/cat <<EOM >$compose_file
-version: "3"
-
-services:
-  postgres:
-    image: postgres
-    container_name: bank_container_${port}
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: bank_${instance}
-    ports:
-      - "${port}:5432"
-    volumes:
-      - postgres_${instance}:/data/postgres
-    restart: always
-
-volumes:
-  postgres_${instance}:
-EOM
-
-    # Ejecutar docker-compose
-    docker-compose -f $compose_file up -d
-
+# Esperar a que los contenedores para PostgreSQL estén en línea
+while ! docker exec -t bank_container_1 pg_isready -U postgres -d bank_1 -h localhost > /dev/null 2>&1; do
+  sleep 1
 done
+
+while ! docker exec -t bank_container_2 pg_isready -U postgres -d bank_2 -h localhost > /dev/null 2>&1; do
+  sleep 1
+done
+
+#
+python main.py 8080 5432 "backendBanks/data/user1.json"
+python main.py 8081 5433 "backendBanks/data/user2.json"
