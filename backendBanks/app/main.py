@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 
-from backend.app.database import create_db
-from backend.app.routers import transactions, users
+from backendBanks.app.database import create_db
+from backendBanks.app.routers import transactions, users
 
 app = FastAPI()
 

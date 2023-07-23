@@ -1,6 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
 
-from backend.app.database import User
+from backendBanks.app.database import User
 
 
 def pay(cbu, amount, db):
@@ -10,7 +10,7 @@ def pay(cbu, amount, db):
     else:
         return -1  # No existe el usuario
     if balance >= amount:
-        balance -= amount
+        user.balance -= amount
     else:
         return -2  # No hay saldo
 
@@ -20,7 +20,7 @@ def pay(cbu, amount, db):
     except SQLAlchemyError:
         raise
 
-    return balance
+    return user.balance
 
 
 def charge(cbu, amount, db):

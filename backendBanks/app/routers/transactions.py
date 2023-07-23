@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from backend.app.crud import transactions_dao
+from backendBanks.app.crud import transactions_dao
 from ..database import get_db
 
 router = APIRouter()
@@ -22,4 +22,11 @@ def pay(cbu: str, amount: float, db: Session = Depends(get_db)):
 
 @router.post("/{cbu}/charge", response_model=float)
 def charge(cbu: str, amount: float, db: Session = Depends(get_db)):
-    return transactions_dao.charge(cbu, amount, db)
+    try:
+        balance = transactions_dao.charge(cbu, amount, db)
+        if balance == -1:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Account not found")
+        else:
+            return balance
+    except HTTPException:
+        raise
