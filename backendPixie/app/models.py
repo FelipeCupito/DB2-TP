@@ -18,7 +18,7 @@ class User(BaseModel):
     name: str
     cuit: str
     cbu: str
-    bank_id: str
+    bank_port: int
 
     @model_validator(mode='after')
     def validate_alias(self) -> 'User':
@@ -43,6 +43,7 @@ class User(BaseModel):
         return self
 
     class Config:
+        # TODO: poner un cbu y un cuit mas real
         json_schema_extra = {
             "example": {
                 "alias_type": "email",
@@ -51,7 +52,7 @@ class User(BaseModel):
                 "name": "Pepe",
                 "cuit": "dldldd",
                 "cbu": "1234123",
-                "bank_id": "1",
+                "bank_port": "1234",
             }
         }
 
@@ -75,7 +76,7 @@ class Bank(BaseModel):
         json_schema_extra = {
             "example": {
                 "name": "Banco Santander",
-                "port": "http://localhost:8000",
+                "port": "1234",
             }
         }
 
@@ -83,7 +84,7 @@ class Bank(BaseModel):
 class Transaction(BaseModel):
     _id: str
     date: datetime = datetime.now()
-    from_id: str
-    to_id: str
+    from_cbu: str
+    to_cbu: str
     amount: int
 

@@ -1,6 +1,6 @@
 from typing import Any
 
-from backend.app.schemas import Response
+from backendPixie.app.schemas import Response
 
 
 def send_error(msg: str) -> Response:

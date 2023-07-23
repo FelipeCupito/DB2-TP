@@ -1,5 +1,5 @@
-from backend.app.database import banks_accounts_collection as db
-from backend.app.models import Bank
+from backendPixie.app.database import banks_accounts_collection as db
+from backendPixie.app.models import Bank
 
 
 def create(bank: Bank):
@@ -16,5 +16,5 @@ def check_bank_port(bank):
     return db.find_one({'port': bank.port}) is not None
 
 
-def check_bank_exist(bank_id: str) -> bool:
-    return db.find_one({'_id': bank_id}) is not None
+def check_bank_exist(bank_port: int) -> bool:
+    return db.find_one({'port': bank_port}) is not None

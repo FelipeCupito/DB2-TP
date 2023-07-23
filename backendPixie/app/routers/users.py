@@ -1,20 +1,20 @@
 from fastapi import APIRouter
-from backend.app.crud import users_dao, banks_dao
+from backendPixie.app.crud import users_dao, banks_dao
 
-from backend.app.models import User
-from backend.app.routers.utils import send_data, send_error
-from backend.app.schemas import Response
+from backendPixie.app.models import User
+from backendPixie.app.routers.utils import send_data, send_error
+from backendPixie.app.schemas import Response
 
 router = APIRouter()
 
 
 @router.post("/", response_model=Response)
 def create_user(user: User):
-    if users_dao.check_cbu_exist(user):
+    if users_dao.check_cbu_exist(user.cbu):
         return send_error("CBU already exists")
     if users_dao.check_alias_exist(user.alias):
         return send_error("Alias already exists")
-    if not banks_dao.check_bank_exist(user.bank_id):
+    if not banks_dao.check_bank_exist(user.bank_port):
         return send_error("Bank does not exist")
 
     user = users_dao.create(user)

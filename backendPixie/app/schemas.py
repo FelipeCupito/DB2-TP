@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, Any
 from pydantic import BaseModel
-from backend.app.models import User
+from backendPixie.app.models import User
 
 
 class AliasTransaction(BaseModel):
@@ -11,11 +11,12 @@ class AliasTransaction(BaseModel):
     amount: int
 
     class Config:
+        # TODO: poner alias mas reales
         json_schema_extra = {
             "example": {
-                "from_alias_id": "1",
-                "to_alias_id": "2",
-                "amount": "100",
+                "from_alias": "1",
+                "to_alias": "2",
+                "amount": 100,
             }
         }
 
@@ -27,11 +28,12 @@ class CbuTransaction(BaseModel):
     amount: int
 
     class Config:
+        # TODO: poner cbu mas reales
         json_schema_extra = {
             "example": {
-                "from_cbu_id": "1",
-                "to_cbu_id": "2",
-                "amount": "100",
+                "from_cbu": "1",
+                "to_cbu": "2",
+                "amount": 100,
             }
         }
 

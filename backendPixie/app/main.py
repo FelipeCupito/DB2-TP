@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from backend.app.config import settings
-from backend.app.routers import banks, transactions, users
+from backendPixie.app.config import settings
+from backendPixie.app.routers import banks, transactions, users
 import uvicorn
 
 app = FastAPI()

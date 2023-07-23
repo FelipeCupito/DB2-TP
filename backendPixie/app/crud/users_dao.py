@@ -1,6 +1,6 @@
 from typing import Optional
-from backend.app.models import User, Bank
-from backend.app.database import user_collection as db
+from backendPixie.app.models import User
+from backendPixie.app.database import user_collection as db
 
 
 def get_by_cbu(cbu: str) -> Optional[User]:
@@ -32,10 +32,14 @@ def delete(cbu: str) -> bool:
     return result.deleted_count > 0
 
 
-def check_cbu_exist(user: User) -> bool:
-    return get_by_cbu(user.cbu) is not None
+def check_cbu_exist(cbu: str) -> bool:
+    return get_by_cbu(cbu) is not None
 
 
 def check_alias_exist(alias: str) -> bool:
     return get_by_alias(alias) is not None
 
+
+def check_balance(from_cbu: str, amount: int) -> bool:
+    # TODO: implement
+    return True
