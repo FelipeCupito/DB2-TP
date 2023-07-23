@@ -5,10 +5,11 @@ from backend.app.database import User
 
 def pay(cbu, amount, db):
     user = db.query(User).filter(User.cbu == cbu).first()
-    if user.balance >= amount:
-        user.balance -= amount
-    else:
-        raise Exception("Insufficient funds")
+    user.balance -= amount
+    # if user.balance >= amount:
+    #     user.balance -= amount
+    # else:
+    #     raise Exception("Insufficient funds")
     try:
         db.commit()
         db.refresh(user)
