@@ -7,7 +7,7 @@ from backendPixie.app.schemas import CbuTransaction, AliasTransaction, Transacti
 from backendPixie.app.crud import users_dao
 
 
-def pay_by_cbu(cbu_transaction: CbuTransaction) -> Optional[Transaction]:
+def save_by_cbu(cbu_transaction: CbuTransaction) -> Optional[Transaction]:
     transaction = _get_transaction_from_cbu(cbu_transaction).model_dump()
     result = db.insert_one(transaction)
     if result.acknowledged:
