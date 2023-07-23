@@ -12,10 +12,10 @@ def pay_by_cbu(cbu_transaction: CbuTransaction):
         return send_error("from CBU does not exist")
     if not users_dao.check_cbu_exist(cbu_transaction.from_cbu):
         return send_error("to CBU does not exist")
-    if not users_dao.check_balance(cbu_transaction.from_cbu, cbu_transaction.amount):
-        return send_error("Insufficient funds")
 
-    transaction = transactions_dao.pay_by_cbu(cbu_transaction)
+    # result = banks_handler.pay_by_cbu(cbu_transaction)
+
+    transaction = transactions_dao.save_by_cbu(cbu_transaction)
     return send_data(transaction)
 
 

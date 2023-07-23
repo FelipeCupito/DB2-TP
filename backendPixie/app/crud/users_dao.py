@@ -38,8 +38,3 @@ def check_cbu_exist(cbu: str) -> bool:
 
 def check_alias_exist(alias: str) -> bool:
     return get_by_alias(alias) is not None
-
-
-def check_balance(from_cbu: str, amount: int) -> bool:
-    # TODO: implement
-    return True
