@@ -1,6 +1,7 @@
 import re
 from pydantic import BaseModel, EmailStr, field_validator
 
+
 class UserBase(BaseModel):
     name: str
     birthday: str
@@ -49,13 +50,13 @@ class UserBase(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                    "name": "Mauro Garcia",
-                    "birthday": "25/06/1989",
-                    "genre": "M",
-                    "cuit": "2021584564",
-                    "cbu": "2569874523698521458965",
-                    "phone": "1156950216",
-                    "email": "maurogarcia@gmail.com",
-                    "balance": 75000,
+                "name": "Mauro Garcia",
+                "birthday": "25/06/1989",
+                "genre": "M",
+                "cuit": "2021584564",
+                "cbu": "2569874523698521458965",
+                "phone": "1156950216",
+                "email": "maurogarcia@gmail.com",
+                "balance": 75000,
             }
         }

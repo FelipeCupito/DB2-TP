@@ -48,6 +48,7 @@ def populate_db():
     info.append(User(name="Malena Vasquez", birthday="16/10/1999", genre="F", cuit="27421942256", cbu="1050025025489632154845", phone="1153145294", email="mavasquez@itba.edu.ar", balance=50000))
     info.append(User(name="Sol Anselmo", birthday="28/01/2001", genre="F", cuit="27432540494", cbu="1112222344444444444443", phone="1158382184", email="soanselmo@itba.edu.ar", balance=60000))
     info.append(User(name="Felipe Cupito", birthday="24/09/1999", genre="M", cuit="27421037476", cbu="2012322344544444244443", phone="1123135744", email="fcupito@itba.edu.ar", balance=30000))
+    info.append(User(name="Juan Lopez", birthday="03/04/2000", genre="M", cuit="273403512", cbu="20123222502544442747443", phone="1150153974", email="juanlopezz@gmail.edu.ar", balance=40000))
 
     for i in info:
         db.add(i)

@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.exceptions import ResponseValidationError
+
 from backend.app.crud import users_dao
 from backend.app.schemas import UserBase
 from sqlalchemy.orm import Session
@@ -15,6 +17,7 @@ def get_user_info(cbu: str, db: Session = Depends(get_db)):
     # except ValueError:
     #     raise Exception("User information incorrectly formatted.")
     # return user
+
 
 
 @router.get("/{cbu}/balance", response_model=float)
