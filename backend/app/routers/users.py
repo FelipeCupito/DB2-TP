@@ -34,4 +34,4 @@ def get_user_balance(cbu: str, db: Session = Depends(get_db)):
     except HTTPException:
         raise
     except ResponseValidationError:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Account information wrongly formatted")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Account information wrongly formatted")

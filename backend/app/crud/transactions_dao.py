@@ -5,23 +5,32 @@ from backend.app.database import User
 
 def pay(cbu, amount, db):
     user = db.query(User).filter(User.cbu == cbu).first()
-    user.balance -= amount
-    # if user.balance >= amount:
-    #     user.balance -= amount
-    # else:
-    #     raise Exception("Insufficient funds")
+    if user:
+        balance = user.balance
+    else:
+        return -1  # No existe el usuario
+    if balance >= amount:
+        balance -= amount
+    else:
+        return -2  # No hay saldo
+
     try:
         db.commit()
         db.refresh(user)
     except SQLAlchemyError:
         raise
 
-    return user.balance
+    return balance
 
 
 def charge(cbu, amount, db):
     user = db.query(User).filter(User.cbu == cbu).first()
-    user.balance += amount
+    if user:
+        balance = user.balance
+    else:
+        return -1  # No existe el usuario
+
+    balance += amount
 
     try:
         db.commit()
@@ -29,4 +38,4 @@ def charge(cbu, amount, db):
     except SQLAlchemyError:
         raise
 
-    return user.balance
+    return balance
