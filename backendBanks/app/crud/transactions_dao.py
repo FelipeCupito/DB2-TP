@@ -26,11 +26,9 @@ def pay(cbu, amount, db):
 def charge(cbu, amount, db):
     user = db.query(User).filter(User.cbu == cbu).first()
     if user:
-        balance = user.balance
+        user.balance += amount
     else:
         return -1  # No existe el usuario
-
-    balance += amount
 
     try:
         db.commit()
@@ -38,4 +36,4 @@ def charge(cbu, amount, db):
     except SQLAlchemyError:
         raise
 
-    return balance
+    return user.balance
