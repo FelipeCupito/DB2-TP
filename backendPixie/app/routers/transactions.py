@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.crud import transactions_dao, users_dao, banks_dao
+from app.crud import transactions_dao, users_dao
 from app.routers import banks_handler
 from app.routers.utils import send_data, send_error
 from app.schemas import Response, CbuTransaction, AliasTransaction

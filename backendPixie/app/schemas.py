@@ -13,12 +13,12 @@ class AliasTransaction(BaseModel):
     amount: int
 
     class Config:
-        # TODO: poner alias mas reales
         json_schema_extra = {
             "example": {
                 "from_alias": "1",
                 "to_alias": "2",
                 "amount": 100,
+                "password": "myPass",
             }
         }
 
@@ -31,12 +31,12 @@ class CbuTransaction(BaseModel):
     amount: int
 
     class Config:
-        # TODO: poner cbu mas reales
         json_schema_extra = {
             "example": {
                 "from_cbu": "1",
                 "to_cbu": "2",
                 "amount": 100,
+                "password": "myPass"
             }
         }
 

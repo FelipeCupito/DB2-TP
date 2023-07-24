@@ -8,7 +8,7 @@ HTTP_PROTOCOL = "http://"
 HOST = "127.0.0.1"
 
 
-def _check_balance(user: User, amount: float) -> [bool, str]:
+def _check_balance(user: User, amount: float) -> (bool, str):
     url = HTTP_PROTOCOL + HOST + ":" + str(user.bank_port) + "/users" + "/" + user.cbu + "/balance"
     response = requests.get(url)
     if response.status_code != 200:
@@ -22,7 +22,7 @@ def _check_balance(user: User, amount: float) -> [bool, str]:
     return False, "Not enough balance"
 
 
-def pay_by_alias(alias_transaction: AliasTransaction) -> [bool, str]:
+def pay_by_alias(alias_transaction: AliasTransaction) -> (bool, str):
     from_cbu = users_dao.get_by_alias(alias_transaction.from_alias).cbu
     to_cbu = users_dao.get_by_alias(alias_transaction.to_alias).cbu
     cbu_transaction = CbuTransaction(
@@ -36,7 +36,7 @@ def pay_by_alias(alias_transaction: AliasTransaction) -> [bool, str]:
     return pay_by_cbu(cbu_transaction)
 
 
-def pay_by_cbu(cbu_transaction: CbuTransaction) -> [bool, str]:
+def pay_by_cbu(cbu_transaction: CbuTransaction) -> (bool, str):
     from_user = users_dao.get_by_cbu(cbu_transaction.from_cbu)
     to_user = users_dao.get_by_cbu(cbu_transaction.to_cbu)
 
