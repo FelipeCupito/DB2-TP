@@ -18,12 +18,12 @@ def pay_by_cbu(cbu_transaction: CbuTransaction):
     if err:
         return send_error(msg)
 
-    transaction = transactions_dao.save_by_cbu(cbu_transaction)
+    transaction = transactions_dao.pay_by_cbu(cbu_transaction)
     return send_data(transaction)
 
 
 @router.post("/pay-alias", response_model=Response)
-def pay_by_cbu(alias_transaction: AliasTransaction):
+def pay_by_alias(alias_transaction: AliasTransaction):
     if not users_dao.check_alias_exist(alias_transaction.to_alias):
         return send_error("from Alias does not exist")
     if not users_dao.check_alias_exist(alias_transaction.from_alias):

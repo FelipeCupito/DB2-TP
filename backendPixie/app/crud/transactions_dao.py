@@ -7,7 +7,7 @@ from app.schemas import CbuTransaction, AliasTransaction, TransactionHistory, Us
 from app.crud import users_dao
 
 
-def save_by_cbu(cbu_transaction: CbuTransaction) -> Optional[Transaction]:
+def pay_by_cbu(cbu_transaction: CbuTransaction) -> Optional[Transaction]:
     transaction = _get_transaction_from_cbu(cbu_transaction).model_dump()
     result = db.insert_one(transaction)
     if result.acknowledged:

@@ -56,15 +56,14 @@ class User(BaseModel):
         return self
 
     class Config:
-        # TODO: poner un cbu y un cuit mas real
         json_schema_extra = {
             "example": {
                 "alias_type": "email",
                 "alias": "pepe@email.com",
                 "password": "myPass",
                 "name": "Pepe",
-                "cuit": "dldldd",
-                "cbu": "1234123",
+                "cuit": "20432540493",
+                "cbu": "1115698756125879562145",
                 "bank_port": "1234",
             }
         }

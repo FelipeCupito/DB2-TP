@@ -15,8 +15,8 @@ class AliasTransaction(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "from_alias": "1",
-                "to_alias": "2",
+                "from_alias": "mauri658",
+                "to_alias": "sol2001",
                 "amount": 100,
                 "password": "myPass",
             }
@@ -33,8 +33,8 @@ class CbuTransaction(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "from_cbu": "1",
-                "to_cbu": "2",
+                "from_cbu": "1115698756125879562145",
+                "to_cbu": "2587965879254687952454",
                 "amount": 100,
                 "password": "myPass"
             }
