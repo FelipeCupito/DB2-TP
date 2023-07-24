@@ -37,9 +37,11 @@ def pay_by_alias(alias_transaction: AliasTransaction):
     return send_data(transaction)
 
 
-@router.get("/history/{cbu}", response_model=Response)
-def get_user_history(cbu: str):
+@router.get("/history/", response_model=Response)
+def get_user_history(cbu: str, password: str):
     if not users_dao.check_cbu_exist(cbu):
         return send_error("CBU does not exist")
+    if not users_dao.check_password(cbu, password):
+        return send_error("Password does not match")
     history = transactions_dao.get_user_history(cbu)
     return send_data(history)
