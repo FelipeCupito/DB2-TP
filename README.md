@@ -5,7 +5,6 @@ Pixie is a project that utilizes FastAPI and Docker to create and run a web API 
 Before proceeding, make sure you have the following programs installed on your machine:
 - Docker: [Installation Guide](https://docs.docker.com/get-docker/)
 - Python 3.8: [Installation Guide](https://www.python.org/downloads/)
-- 
 ## Setup Instructions
 Grant execution permissions to the setup scripts:
 ```bash
