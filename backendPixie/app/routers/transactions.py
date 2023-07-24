@@ -14,8 +14,8 @@ def pay_by_cbu(cbu_transaction: CbuTransaction):
     if not users_dao.check_cbu_exist(cbu_transaction.from_cbu):
         return send_error("to CBU does not exist")
 
-    err, msg = banks_handler.pay_by_cbu(cbu_transaction)
-    if err:
+    status, msg = banks_handler.pay_by_cbu(cbu_transaction)
+    if not status:
         return send_error(msg)
 
     transaction = transactions_dao.pay_by_cbu(cbu_transaction)
@@ -29,8 +29,8 @@ def pay_by_alias(alias_transaction: AliasTransaction):
     if not users_dao.check_alias_exist(alias_transaction.from_alias):
         return send_error("to Alias does not exist")
 
-    err, msg = banks_handler.pay_by_alias(alias_transaction)
-    if err:
+    status, msg = banks_handler.pay_by_alias(alias_transaction)
+    if not status:
         return send_error(msg)
 
     transaction = transactions_dao.pay_by_alias(alias_transaction)

@@ -16,8 +16,8 @@ def _check_balance(user: User, amount: float) -> (bool, str):
 
     response.json()
 
-    if float(response.content) - amount >= 0 >= 0:
-        return True
+    if float(response.content) - amount >= 0:
+        return True, "Success"
 
     return False, "Not enough balance"
 
@@ -43,22 +43,28 @@ def pay_by_cbu(cbu_transaction: CbuTransaction) -> (bool, str):
     if not from_user.pass_matches(cbu_transaction.password):
         return False, "Password does not match"
 
-    err, msg = _check_balance(from_user, cbu_transaction.amount)
-    if err:
+    status, msg = _check_balance(from_user, cbu_transaction.amount)
+    if not status:
         return False, msg
 
-    url1 = HTTP_PROTOCOL + HOST + ":" + str(from_user.bank_port) + "/transactions" + "/" + from_user.cbu + "/pay"
-    url2 = HTTP_PROTOCOL + HOST + ":" + str(to_user.bank_port) + "/transactions" + "/" + to_user.cbu + "/charge"
+    from_url = HTTP_PROTOCOL + HOST + ":" + str(from_user.bank_port) + "/transactions" + "/pay"
+    to_url2 = HTTP_PROTOCOL + HOST + ":" + str(to_user.bank_port) + "/transactions" + "/charge"
 
-    payload = {
+    from_payload = {
+        "cbu": cbu_transaction.from_cbu,
         "amount": cbu_transaction.amount,
     }
 
-    from_response = requests.post(url1, data=json.dumps(payload))
+    to_payload = {
+        "cbu": cbu_transaction.to_cbu,
+        "amount": cbu_transaction.amount,
+    }
+
+    from_response = requests.post(from_url, data=json.dumps(from_payload))
     if from_response.status_code != 200:
         return False, "Error in from bank"
 
-    to_response = requests.post(url2, data=json.dumps(payload))
+    to_response = requests.post(to_url2, data=json.dumps(to_payload))
     if to_response.status_code != 200:
         return False, "Error in to bank"
 

@@ -1,4 +1,6 @@
 import re
+from typing import Optional, Any
+
 from pydantic import BaseModel, EmailStr, field_validator
 
 
@@ -58,5 +60,35 @@ class UserBase(BaseModel):
                 "phone": "1156950216",
                 "email": "maurogarcia@gmail.com",
                 "balance": 75000,
+            }
+        }
+
+
+class Response(BaseModel):
+    status_code: int
+    response_type: str
+    description: str
+    data: Optional[Any]
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "status_code": 200,
+                "response_type": "success",
+                "description": "Operation successful",
+                "data": "Sample data",
+            }
+        }
+
+
+class Transaction(BaseModel):
+    cbu: str
+    amount: int
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "cbu": "1115698756125879562145",
+                "amount": 100,
             }
         }
