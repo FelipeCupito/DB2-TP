@@ -1,6 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
 
-from backendBanks.app.database import User
+from app.database import User
 
 
 def pay(cbu, amount, db):

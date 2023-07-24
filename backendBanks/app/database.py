@@ -5,12 +5,14 @@ from sqlalchemy import create_engine, inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, String, Float
-from backendBanks.app.config import settings
+from app.config import settings
 
 
 port = sys.argv[2] if len(sys.argv) > 2 else 5432
 
 SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOSTNAME}:{int(port)}/{settings.POSTGRES_DB}"
+
+print(SQLALCHEMY_DATABASE_URL)
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
@@ -58,7 +60,7 @@ def populate_db():
 
     db = SessionLocal()
 
-    for user_data in data:
+    for user_data in data['users']:
         user = User(**user_data)
         db.add(user)
 

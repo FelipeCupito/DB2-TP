@@ -1,4 +1,4 @@
-from ..database import User
+from app.database import User
 
 
 def get_info(cbu, db):

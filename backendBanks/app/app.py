@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from backendBanks.app.database import create_db
-from backendBanks.app.routers import transactions, users
+from app.database import create_db
+from app.routers import transactions, users
 
 app = FastAPI()
 

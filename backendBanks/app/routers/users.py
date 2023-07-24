@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.exceptions import ResponseValidationError
 
-from backendBanks.app.crud import users_dao
-from backendBanks.app.schemas import UserBase
+from app.crud import users_dao
+from app.schemas import UserBase
 from sqlalchemy.orm import Session
 from ..database import get_db
 

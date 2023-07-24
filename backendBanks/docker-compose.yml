@@ -3,11 +3,11 @@ version: "3"
 services:
   postgres_1:
     image: postgres
-    container_name: bank_container
+    container_name: bank_1
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: bank_1
+      POSTGRES_DB: bank
     ports:
       - "5432:5432"
     volumes:
@@ -16,13 +16,13 @@ services:
 
   postgres_2:
     image: postgres
-    container_name: bank_container
+    container_name: bank_2
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: bank_2
+      POSTGRES_DB: bank
     ports:
-      - "5432:5433"
+      - "5433:5432"
     volumes:
       - postgres:/data/postgres
     restart: always

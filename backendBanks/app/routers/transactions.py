@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from backendBanks.app.crud import transactions_dao
+from app.crud import transactions_dao
 from ..database import get_db
 
 router = APIRouter()
