@@ -2,7 +2,9 @@ from datetime import datetime
 
 from pydantic import BaseModel, model_validator
 from enum import Enum
+import bcrypt
 
+_ENCODING = 'utf-8'
 
 
 class AliasType(str, Enum):
@@ -10,6 +12,9 @@ class AliasType(str, Enum):
     PHONE = "phone"
     NICKNAME = "nickname"
 
+
+def hash(password: str):
+    return bcrypt.hashpw(password.encode(_ENCODING), bcrypt.gensalt()).decode(_ENCODING)
 
 
 class User(BaseModel):

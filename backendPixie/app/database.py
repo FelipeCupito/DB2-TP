@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from app.config import settings
+from app.models import Bank, User, hash
 
 COLLECTIONS_USER = "users"
 COLLECTIONS_TRANSACTION = "transactions"
