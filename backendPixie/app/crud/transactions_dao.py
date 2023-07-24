@@ -1,10 +1,10 @@
 from typing import Optional
 
-from backendPixie.app.database import transactions_collection as db
-from backendPixie.app.models import Transaction
-from backendPixie.app.schemas import CbuTransaction, AliasTransaction, TransactionHistory
+from app.database import transactions_collection as db
+from app.models import Transaction
+from app.schemas import CbuTransaction, AliasTransaction, TransactionHistory
 
-from backendPixie.app.crud import users_dao
+from app.crud import users_dao
 
 
 def save_by_cbu(cbu_transaction: CbuTransaction) -> Optional[Transaction]:

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from backendPixie.app.crud import transactions_dao, users_dao, banks_dao
-from backendPixie.app.routers.utils import send_data, send_error
-from backendPixie.app.schemas import Response, CbuTransaction, AliasTransaction
+from app.crud import transactions_dao, users_dao, banks_dao
+from app.routers.utils import send_data, send_error
+from app.schemas import Response, CbuTransaction, AliasTransaction
 
 router = APIRouter()
 

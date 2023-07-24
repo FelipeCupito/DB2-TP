@@ -1,4 +1,4 @@
-from pydantic.v1 import BaseSettings
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -12,10 +12,11 @@ class Settings(BaseSettings):
     MONGO_DB_DBNAME: str
     MONGO_USERNAME: str
     MONGO_PASSWORD: str
+    MONGO_DB_HOST: str
 
     class Config:
         case_sensitive = True
-        env_file = "backendPixie/.env"
+        env_file = ".env"
 
 
 settings = Settings()

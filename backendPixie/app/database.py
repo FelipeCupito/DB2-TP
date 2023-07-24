@@ -1,8 +1,10 @@
 from pymongo import MongoClient
-from backendPixie.app.config import settings
+from app.config import settings
 
 COLLECTIONS_NAME = ["users", "transactions", "banks_accounts"]
 DATABASE_URL = f"mongodb://{settings.MONGO_USERNAME}:{settings.MONGO_PASSWORD}@{settings.MONGO_DB_HOSTNAME}:{settings.DATABASE_PORT}"
+
+print(DATABASE_URL)
 
 client = MongoClient(DATABASE_URL)
 db = client[settings.MONGO_DB_DBNAME]

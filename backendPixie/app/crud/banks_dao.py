@@ -1,5 +1,5 @@
-from backendPixie.app.database import banks_accounts_collection as db
-from backendPixie.app.models import Bank
+from app.database import banks_accounts_collection as db
+from app.models import Bank
 
 
 def create(bank: Bank):

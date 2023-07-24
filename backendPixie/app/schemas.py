@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, Any
 from pydantic import BaseModel
-from backendPixie.app.models import User
+from app.models import User
 
 
 class AliasTransaction(BaseModel):

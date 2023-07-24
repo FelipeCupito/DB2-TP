@@ -1,6 +1,6 @@
 from typing import Optional
-from backendPixie.app.models import User
-from backendPixie.app.database import user_collection as db
+from app.models import User
+from app.database import user_collection as db
 
 
 def get_by_cbu(cbu: str) -> Optional[User]:

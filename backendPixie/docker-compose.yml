@@ -3,6 +3,7 @@ version: "3"
 services:
   mongo_4983:
     image: mongo:latest
+    container_name: pixie
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongo
