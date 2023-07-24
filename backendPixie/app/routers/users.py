@@ -1,23 +1,23 @@
 from fastapi import APIRouter
 from app.crud import users_dao, banks_dao
+from app.routers import banks_handler
 
-from app.models import User
 from app.routers.utils import send_data, send_error
-from app.schemas import Response
+from app.schemas import Response, NewUser
 
 router = APIRouter()
 
 
 @router.post("/", response_model=Response)
-def create_user(user: User):
-    if users_dao.check_cbu_exist(user.cbu):
+def create_user(new_user: NewUser):
+    if users_dao.check_cbu_exist(new_user.cbu):
         return send_error("CBU already exists")
-    if users_dao.check_alias_exist(user.alias):
+    if users_dao.check_alias_exist(new_user.alias):
         return send_error("Alias already exists")
-    if not banks_dao.check_bank_exist(user.bank_port):
+    if not banks_dao.check_bank_name_exist(new_user.bank_name):
         return send_error("Bank does not exist")
 
-    user = users_dao.create(user)
+    user = users_dao.create(new_user)
     return send_data(user)
 
 
@@ -37,3 +37,14 @@ def read_user_by_alias(alias: str):
     return send_data(user)
 
 
+@router.get("/{cbu}/balance", response_model=Response)
+def get_balance(cbu: str):
+    user = users_dao.get_by_cbu(cbu)
+    if user is None:
+        return send_error("User not found")
+
+    status, balance = banks_handler.get_user_balance(user)
+    if not status:
+        return send_error("Error in bank")
+
+    return send_data(balance)

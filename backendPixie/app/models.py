@@ -13,7 +13,7 @@ class AliasType(str, Enum):
     NICKNAME = "nickname"
 
 
-def hash(password: str):
+def _hash(password: str):
     return bcrypt.hashpw(password.encode(_ENCODING), bcrypt.gensalt()).decode(_ENCODING)
 
 
@@ -28,45 +28,10 @@ class User(BaseModel):
     bank_port: int
 
     def hash_pass(self):
-        self.password = hash(self.password)
+        self.password = _hash(self.password)
 
     def pass_matches(self, password: str):
         return bcrypt.checkpw(password.encode(_ENCODING), self.password.encode(_ENCODING))
-
-    @model_validator(mode='after')
-    def validate_alias(self) -> 'User':
-        alias_type = self.alias_type
-        alias = self.alias
-
-        if alias_type is None:
-            raise ValueError("alias_type debe ser asignado antes del alias")
-
-        if alias_type == AliasType.EMAIL:
-            if "@" not in alias:
-                raise ValueError("Email inválido")
-
-        elif alias_type == AliasType.PHONE:
-            if not alias.isdigit():
-                raise ValueError("Número de teléfono debe contener solo dígitos")
-
-        elif alias_type == AliasType.NICKNAME:
-            if not alias.isalnum():
-                raise ValueError("El alias sóolo puede contener caracteres alfanuméricos")
-
-        return self
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "alias_type": "email",
-                "alias": "pepe@email.com",
-                "password": "myPass",
-                "name": "Pepe",
-                "cuit": "20432540493",
-                "cbu": "1115698756125879562145",
-                "bank_port": "1234",
-            }
-        }
 
 
 class Bank(BaseModel):
@@ -98,4 +63,4 @@ class Transaction(BaseModel):
     date: datetime = datetime.now()
     from_cbu: str
     to_cbu: str
-    amount: int
+    amount: float

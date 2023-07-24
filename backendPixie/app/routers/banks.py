@@ -13,5 +13,8 @@ def create_bank(bank: Bank):
     if banks_dao.check_bank_port(bank):
         return send_error("Bank port already exists")
 
+    if banks_dao.check_bank_name(bank):
+        return send_error("Bank name already exists")
+
     bank = banks_dao.create(bank)
     return send_data(bank)

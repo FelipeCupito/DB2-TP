@@ -8,15 +8,21 @@ HTTP_PROTOCOL = "http://"
 HOST = "127.0.0.1"
 
 
-def _check_balance(user: User, amount: float) -> (bool, str):
+def get_user_balance(user: User) -> (bool, float):
     url = HTTP_PROTOCOL + HOST + ":" + str(user.bank_port) + "/users" + "/" + user.cbu + "/balance"
     response = requests.get(url)
     if response.status_code != 200:
-        return False, "Error in bank"
+        return False, 0
 
-    response.json()
+    return True, float(response.content)
 
-    if float(response.content) - amount >= 0:
+
+def _check_balance(user: User, amount: float) -> (bool, str):
+    status, balance = get_user_balance(user)
+    if not status:
+        return False, "Error getting balance"
+
+    if balance - amount >= 0:
         return True, "Success"
 
     return False, "Not enough balance"

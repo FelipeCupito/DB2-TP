@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from app.config import settings
-from app.models import Bank, User, hash
+from app.models import Bank, User, _hash
 
 COLLECTIONS_USER = "users"
 COLLECTIONS_TRANSACTION = "transactions"
@@ -39,7 +39,7 @@ def _create_user():
     user1_data = {
         "alias_type": "email",
         "alias": "fcupito@itba.edu.ar",
-        "password": hash("myPass"),
+        "password": _hash("myPass"),
         "name": "Felipe Cupito",
         "cuit": "27421037476",
         "cbu": "2012322344544444244443",
@@ -48,7 +48,7 @@ def _create_user():
     user2_data = {
         "alias_type": "phone",
         "alias": "1153145294",
-        "password": hash("pass"),
+        "password": _hash("pass"),
         "name": "Malena Vasquez",
         "cuit": "27421942256",
         "cbu": "1050025025489632154845",
@@ -57,7 +57,7 @@ def _create_user():
     user3_data = {
         "alias_type": "phone",
         "alias": "1168325648",
-        "password": hash("pass1234"),
+        "password": _hash("pass1234"),
         "name": "Lucia Martinez",
         "cuit": "27441737251",
         "cbu": "1050055025489573154848",
@@ -66,7 +66,7 @@ def _create_user():
     user4_data = {
         "alias_type": "nickname",
         "alias": "maxperez89",
-        "password": hash("password"),
+        "password": _hash("password"),
         "name": "Maximiliano Perez",
         "cuit": "27500676437",
         "cbu": "1112222398765432154898",

@@ -1,6 +1,8 @@
 from typing import Optional
 from app.models import User
 from app.database import user_collection as db
+from app.crud import banks_dao
+from app.schemas import NewUser
 
 
 def get_by_cbu(cbu: str) -> Optional[User]:
@@ -17,7 +19,21 @@ def get_by_alias(alias: str) -> Optional[User]:
     return User(**user)
 
 
-def create(user: User) -> Optional[User]:
+def _get_model_user(new_user: NewUser) -> User:
+    bank_port = banks_dao.get_bank_port(new_user.bank_name)
+    return User(
+        alias_type=new_user.alias_type,
+        alias=new_user.alias,
+        password=new_user.password,
+        name=new_user.name,
+        cuit=new_user.cuit,
+        cbu=new_user.cbu,
+        bank_port=bank_port,
+    )
+
+
+def create(new_user: NewUser) -> Optional[User]:
+    user = _get_model_user(new_user)
     user.hash_pass()
     user_data = user.model_dump()
     result = db.insert_one(user_data)

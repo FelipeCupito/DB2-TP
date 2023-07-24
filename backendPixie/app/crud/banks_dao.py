@@ -1,3 +1,5 @@
+from typing import Optional
+
 from app.database import banks_accounts_collection as db
 from app.models import Bank
 
@@ -12,9 +14,20 @@ def create(bank: Bank):
     return None
 
 
-def check_bank_port(bank):
+def get_bank_port(bank_name: str) -> Optional[int]:
+    bank = db.find_one({'name': bank_name})
+    if bank is None:
+        return None
+    return bank['port']
+
+
+def check_bank_port(bank: Bank):
     return db.find_one({'port': bank.port}) is not None
 
 
-def check_bank_exist(bank_port: int) -> bool:
-    return db.find_one({'port': bank_port}) is not None
+def check_bank_name(bank: Bank):
+    return db.find_one({'name': bank.name}) is not None
+
+
+def check_bank_name_exist(bank_name: str):
+    return db.find_one({'name': bank_name}) is not None

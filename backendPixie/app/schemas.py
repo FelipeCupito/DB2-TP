@@ -1,8 +1,53 @@
 from datetime import datetime
 from typing import Optional, Any
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 
-from app.models import User
+from app.models import User, AliasType
+
+
+class NewUser(BaseModel):
+    alias_type: AliasType
+    alias: str
+    password: str
+    name: str
+    cuit: str
+    cbu: str
+    bank_name: str
+
+    @model_validator(mode='after')
+    def validate_alias(self) -> 'NewUser':
+        alias_type = self.alias_type
+        alias = self.alias
+
+        if alias_type is None:
+            raise ValueError("alias_type debe ser asignado antes del alias")
+
+        if alias_type == AliasType.EMAIL:
+            if "@" not in alias:
+                raise ValueError("Email inválido")
+
+        elif alias_type == AliasType.PHONE:
+            if not alias.isdigit():
+                raise ValueError("Número de teléfono debe contener solo dígitos")
+
+        elif alias_type == AliasType.NICKNAME:
+            if not alias.isalnum():
+                raise ValueError("El alias sóolo puede contener caracteres alfanuméricos")
+
+        return self
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "alias_type": "email",
+                "alias": "pepe@email.com",
+                "password": "myPass",
+                "name": "Pepe",
+                "cuit": "20432540493",
+                "cbu": "1115698756125879562145",
+                "bank_name": "Banco Santander",
+            }
+        }
 
 
 class AliasTransaction(BaseModel):
@@ -10,7 +55,7 @@ class AliasTransaction(BaseModel):
     from_alias: str
     password: str
     to_alias: str
-    amount: int
+    amount: float
 
     class Config:
         json_schema_extra = {
@@ -28,7 +73,7 @@ class CbuTransaction(BaseModel):
     from_cbu: str
     password: str
     to_cbu: str
-    amount: int
+    amount: float
 
     class Config:
         json_schema_extra = {
