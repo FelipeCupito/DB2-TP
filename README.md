@@ -41,3 +41,7 @@ If you wish to stop the application execution, simply press `Ctrl + C` in the te
 ## Additional Notes
 To change the port of the applications, navigate to the corresponding `run_bank1.sh`, `run_bank2.sh`, or `run_pixie.sh` file. Inside the file, you'll find a line similar to `python3 main.py 8080 5432 "data/user1.json"`. Change the value of the first parameter passed to main.py to modify the port. For example, if you want bank 1 to run on port 8081, modify the file to `python3 main.py 8081 5432 "data/user1.json"`.
 
+## Authors
+- 60058 - Felipe Cupitó
+- 60072 - Malena Vasquez Currie
+- 61278 - Sol Victoria Anselmo
