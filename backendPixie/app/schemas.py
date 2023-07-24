@@ -1,8 +1,14 @@
 from datetime import datetime
 from typing import Optional, Any
 from pydantic import BaseModel, model_validator
+import re
 
 from app.models import User, AliasType
+
+PATTERN_CBU = r'^\d{22}$'
+PATTERN_PHONE = r'^\d{10}$'
+PATTERN_CUIT = r'^(20|23|24|25|26|27|30|33|34)[0-9]{8}[0-9]{1}$'
+PATTERN_EMAIL = r'^[\w.-]+@[\w.-]+.\w+$'
 
 
 class NewUser(BaseModel):
@@ -19,15 +25,21 @@ class NewUser(BaseModel):
         alias_type = self.alias_type
         alias = self.alias
 
+        if not re.match(PATTERN_CBU, self.cbu):
+            raise ValueError('CBU must be 22 numbers long')
+
+        if not re.match(PATTERN_CUIT, self.cuit):
+            raise ValueError('Must be an existing CUIT')
+
         if alias_type is None:
             raise ValueError("alias_type debe ser asignado antes del alias")
 
         if alias_type == AliasType.EMAIL:
-            if "@" not in alias:
+            if not re.match(PATTERN_EMAIL, alias):
                 raise ValueError("Email inválido")
 
         elif alias_type == AliasType.PHONE:
-            if not alias.isdigit():
+            if not re.match(PATTERN_PHONE, alias):
                 raise ValueError("Número de teléfono debe contener solo dígitos")
 
         elif alias_type == AliasType.NICKNAME:
