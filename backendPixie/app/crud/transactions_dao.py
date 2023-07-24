@@ -2,7 +2,7 @@ from typing import Optional
 
 from app.database import transactions_collection as db
 from app.models import Transaction
-from app.schemas import CbuTransaction, AliasTransaction, TransactionHistory
+from app.schemas import CbuTransaction, AliasTransaction, TransactionHistory, UserHistory
 
 from app.crud import users_dao
 
@@ -29,15 +29,14 @@ def pay_by_alias(alis_transaction: AliasTransaction) -> Optional[Transaction]:
 
 def get_user_history(cbu: str) -> list[TransactionHistory]:
     to_return = []
-    sjsj = db.find({'from_cbu': cbu})
-    for transaction in sjsj:
-        # TODO: que no se vea los datos sensibles de los usuarios
+    transactions = db.find({'from_cbu': cbu})
+    for transaction in transactions:
         from_user = users_dao.get_by_cbu(transaction['from_cbu'])
         to_user = users_dao.get_by_cbu(transaction['to_cbu'])
         to_return.append(
             TransactionHistory(
-                from_user=from_user,
-                to_user=to_user,
+                from_user=UserHistory.from_user(from_user),
+                to_user=UserHistory.from_user(to_user),
                 amount=transaction['amount'],
                 date=transaction['date'],
 
