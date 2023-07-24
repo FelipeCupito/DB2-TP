@@ -1,12 +1,14 @@
 from datetime import datetime
 from typing import Optional, Any
 from pydantic import BaseModel
+
 from app.models import User
 
 
 class AliasTransaction(BaseModel):
     date: datetime = datetime.now()
     from_alias: str
+    password: str
     to_alias: str
     amount: int
 
@@ -24,6 +26,7 @@ class AliasTransaction(BaseModel):
 class CbuTransaction(BaseModel):
     date: datetime = datetime.now()
     from_cbu: str
+    password: str
     to_cbu: str
     amount: int
 
@@ -38,10 +41,24 @@ class CbuTransaction(BaseModel):
         }
 
 
+class UserHistory(BaseModel):
+    alias: str
+    name: str
+    cbu: str
+
+    @classmethod
+    def from_user(cls, user: User) -> 'UserHistory':
+        return cls(
+            alias=user.alias,
+            name=user.name,
+            cbu=user.cbu,
+        )
+
+
 class TransactionHistory(BaseModel):
     date: datetime
-    from_user: User
-    to_user: User
+    from_user: UserHistory
+    to_user: UserHistory
     amount: int
 
 

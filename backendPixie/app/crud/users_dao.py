@@ -18,6 +18,7 @@ def get_by_alias(alias: str) -> Optional[User]:
 
 
 def create(user: User) -> Optional[User]:
+    user.hash_pass()
     user_data = user.model_dump()
     result = db.insert_one(user_data)
     if result.acknowledged:

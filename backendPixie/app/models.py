@@ -4,10 +4,12 @@ from pydantic import BaseModel, model_validator
 from enum import Enum
 
 
+
 class AliasType(str, Enum):
     EMAIL = "email"
     PHONE = "phone"
     NICKNAME = "nickname"
+
 
 
 class User(BaseModel):
@@ -19,6 +21,12 @@ class User(BaseModel):
     cuit: str
     cbu: str
     bank_port: int
+
+    def hash_pass(self):
+        self.password = hash(self.password)
+
+    def pass_matches(self, password: str):
+        return bcrypt.checkpw(password.encode(_ENCODING), self.password.encode(_ENCODING))
 
     @model_validator(mode='after')
     def validate_alias(self) -> 'User':
@@ -87,4 +95,3 @@ class Transaction(BaseModel):
     from_cbu: str
     to_cbu: str
     amount: int
-

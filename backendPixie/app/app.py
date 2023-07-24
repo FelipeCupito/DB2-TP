@@ -1,8 +1,5 @@
 from fastapi import FastAPI
-
-from app.config import settings
-from app.routers import banks, transactions, users
-import uvicorn
+from app.routers import transactions, users, banks
 
 app = FastAPI()
 
