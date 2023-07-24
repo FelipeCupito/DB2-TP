@@ -31,3 +31,8 @@ def check_bank_name(bank: Bank):
 
 def check_bank_name_exist(bank_name: str):
     return db.find_one({'name': bank_name}) is not None
+
+
+def get_all() -> list[Bank]:
+    banks = list(db.find())
+    return [Bank(**bank) for bank in banks]

@@ -18,3 +18,9 @@ def create_bank(bank: Bank):
 
     bank = banks_dao.create(bank)
     return send_data(bank)
+
+
+@router.get("/all", response_model=Response)
+def get_all_banks():
+    banks = banks_dao.get_all()
+    return send_data(banks)
