@@ -25,31 +25,21 @@ if login:
     else:
         st.session_state.cbu = cbu
         name = res_dict["data"]["name"]
-        welcome_msg = "Hola, " + name + "!"
+        cuit = res_dict["data"]["cuit"]
+        alias = res_dict["data"]["alias"]
+        welcome_msg = "Hello, " + name + "!"
+        cuit_msg = "CUIT: " + cuit
+        alias_msg = "Alias: " + alias
         st.write(welcome_msg)
-
-if st.session_state.cbu:
-    cols = st.columns(2)
-    with cols[0]:
-        balance = st.button("Consultar Balance 💰")
-        if balance:
-            st.session_state.cbu = cbu
-            url = "http://127.0.0.1:8000/users/" + st.session_state.cbu + "/balance"
-            amount = requests.get(url)
-            st.write("$" + amount.text)
-    cols = st.columns(2)
-    with cols[0]:
-        st.session_state.to_cbu = st.text_input("CBU Destinatario:")
-    with cols[1]:
-        st.session_state.amount = st.text_input("Monto:")
-    pay = st.button("Pagar 💵")
-    if pay:
-        url_pay = "http://127.0.0.1:8000/transactions/" + st.session_state.cbu + "/pay"
-        url_charge = "http://127.0.0.1:8000/transactions/" + st.session_state.to_cbu + "/charge"
-        params = {"amount": float(st.session_state.amount)}
-        res_pay = requests.post(url_pay, params=params)
-        res_charge = requests.post(url_charge, params=params)
-        if res_pay.status_code != 200 or res_charge.status_code != 200:
-            st.warning("Pago no realizado. Consultar saldo y/o verifique el CBU del destinatario.")
+        st.write(cuit_msg)
+        st.write(alias_msg)
+        url = "http://127.0.0.1:8000/users/" + st.session_state.cbu + "/balance"
+        res = requests.get(url)
+        res_dict = json.loads(res.text)
+        balance = res_dict["data"]
+        if balance is None:
+            st.write("Balance: $0" )
         else:
-            st.success("Pago realizado!")
+            st.write("Balance: $" + str(balance))
+        
+            

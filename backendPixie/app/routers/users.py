@@ -8,7 +8,7 @@ from app.schemas import Response, NewUser
 router = APIRouter()
 
 
-@router.post("/", response_model=Response)
+@router.post("/register", response_model=Response)
 def create_user(new_user: NewUser):
     if users_dao.check_cbu_exist(new_user.cbu):
         return send_error("CBU already exists")

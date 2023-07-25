@@ -34,8 +34,8 @@ with st.form("create_user"):
         new_user["name"] = name
         new_user["password"] = password
         json_user = json.dumps(new_user)
-        res = requests.post("http://127.0.0.1:8000/users/", data=json_user)
+        res = requests.post("http://127.0.0.1:8000/users/register", data=json_user)
         if res.status_code == 200:
             st.success("User successfully created!")
         else:
-            st.warning("User not created. Please check alues.")
+            st.warning("User not created. Please check values.")
