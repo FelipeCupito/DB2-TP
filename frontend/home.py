@@ -1,6 +1,7 @@
 import json
 import streamlit as st
 import requests
+import pandas as pd
 
 if 'cbu' not in st.session_state:
     st.session_state.cbu = ""
@@ -8,6 +9,14 @@ if 'to_cbu' not in st.session_state:
     st.session_state.to_cbu = ""
 if 'amount' not in st.session_state:
     st.session_state.amount = ""
+
+transactions = {
+    "Date": [],
+    "Alias": [],
+    "Name": [],
+    "CBU": [],
+    "Amount": []
+}
 
 st.set_page_config(page_title="🏠 Home")
 st.title("🧚Pixie")
@@ -41,5 +50,21 @@ if login:
             st.write("Balance: $0" )
         else:
             st.write("Balance: $" + str(balance))
-        
-            
+        with st.expander("Transaction History"):
+            url_hist = "http://127.0.0.1:8000/transactions/" + st.session_state.cbu + "/history"
+            res_hist = requests.get(url_hist)
+            hist_dict = json.loads(res_hist.text)
+            history = hist_dict["data"]
+            if history is None:
+                st.write("No transactions")
+            else:
+                for i in range(0, len(hist_dict["data"])):
+                    transaction = hist_dict["data"][i]
+                    transactions["Date"].append(transaction["date"])
+                    transactions["Alias"].append(transaction["to_user"]["alias"])
+                    transactions["Name"].append(transaction["to_user"]["name"])
+                    transactions["CBU"].append(transaction["to_user"]["cbu"])
+                    transactions["Amount"].append(transaction["amount"])
+                transactions_df = pd.DataFrame.from_dict(transactions)
+                st.table(transactions_df)
+                
