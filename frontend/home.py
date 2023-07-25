@@ -12,16 +12,16 @@ if 'amount' not in st.session_state:
 st.set_page_config(page_title="🏠 Home")
 st.title("🧚Pixie")
 
-st.subheader("La plataforma de pagos N°1 de Argentina" )
+st.subheader("The N°1 payment platform in Argentina" )
 
 cbu = st.text_input(label="CBU:")
-login = st.button("Ingresar ➡")
+login = st.button("Enter ➡")
 if login:
     url = "http://127.0.0.1:8000/users/cbu/" + cbu
     res = requests.get(url)
     res_dict = json.loads(res.text)
     if res.status_code != 200 or res_dict["data"] is None:
-        st.warning("Usuario no encontrado. Por favor verifique el CBU ingresado.")
+        st.warning("User not found. Please verify the CBU.")
     else:
         st.session_state.cbu = cbu
         name = res_dict["data"]["name"]
