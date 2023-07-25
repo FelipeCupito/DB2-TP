@@ -36,11 +36,8 @@ this will start the bank2 application on port 8090
 this will start the pixie application on port 8000
 
 4. Start the frontend application by running the following commands:
-```python
- pip install streamlit
- pip install requests
- cd frontend
- streamlit run home.py --server.enableCORS false --server.enableXsrfProtection false
+```bash
+ ./run_app.sh
 ```
 this will start the frontend application on port 8501
 
