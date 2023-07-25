@@ -5,6 +5,8 @@ import pandas as pd
 
 if 'cbu' not in st.session_state:
     st.session_state.cbu = ""
+if 'alias' not in st.session_state:
+    st.session_state.alias = ""
 if 'to_cbu' not in st.session_state:
     st.session_state.to_cbu = ""
 if 'amount' not in st.session_state:
@@ -36,6 +38,7 @@ if login:
         name = res_dict["data"]["name"]
         cuit = res_dict["data"]["cuit"]
         alias = res_dict["data"]["alias"]
+        st.session_state.alias = alias
         welcome_msg = "Hello, " + name + "!"
         cuit_msg = "CUIT: " + cuit
         alias_msg = "Alias: " + alias

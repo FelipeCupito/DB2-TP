@@ -9,9 +9,9 @@ router = APIRouter()
 
 @router.post("/pay-cbu", response_model=Response)
 def pay_by_cbu(cbu_transaction: CbuTransaction):
-    if not users_dao.check_cbu_exist(cbu_transaction.to_cbu):
-        return send_error("from CBU does not exist")
     if not users_dao.check_cbu_exist(cbu_transaction.from_cbu):
+        return send_error("from CBU does not exist")
+    if not users_dao.check_cbu_exist(cbu_transaction.to_cbu):
         return send_error("to CBU does not exist")
 
     status, msg = banks_handler.pay_by_cbu(cbu_transaction)
@@ -24,9 +24,9 @@ def pay_by_cbu(cbu_transaction: CbuTransaction):
 
 @router.post("/pay-alias", response_model=Response)
 def pay_by_alias(alias_transaction: AliasTransaction):
-    if not users_dao.check_alias_exist(alias_transaction.to_alias):
-        return send_error("from Alias does not exist")
     if not users_dao.check_alias_exist(alias_transaction.from_alias):
+        return send_error("from Alias does not exist")
+    if not users_dao.check_alias_exist(alias_transaction.to_alias):
         return send_error("to Alias does not exist")
 
     status, msg = banks_handler.pay_by_alias(alias_transaction)

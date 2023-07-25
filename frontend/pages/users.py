@@ -2,6 +2,7 @@ import json
 import requests
 import streamlit as st
 
+st.set_page_config(page_title="🧑🏻 Create User")
 st.header("🧑🏻 Create User")
 
 new_user = {}
