@@ -39,6 +39,7 @@ this will start the pixie application on port 8000
 ```python
  pip install streamlit
  pip install requests
+ cd frontend
  streamlit run home.py --server.enableCORS false --server.enableXsrfProtection false
 ```
 this will start the frontend application on port 8501
