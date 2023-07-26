@@ -1,52 +1,73 @@
+import json
 import streamlit as st
 import requests
-import json
+import pandas as pd
 
 if 'cbu' not in st.session_state:
     st.session_state.cbu = ""
+if 'alias' not in st.session_state:
+    st.session_state.alias = ""
 if 'to_cbu' not in st.session_state:
     st.session_state.to_cbu = ""
 if 'amount' not in st.session_state:
     st.session_state.amount = ""
 
-st.title("🏦 Banco")
+transactions = {
+    "Date": [],
+    "Alias": [],
+    "Name": [],
+    "CBU": [],
+    "Amount": []
+}
+
+st.set_page_config(page_title="🏠 Home")
+st.title("🧚Pixie")
+
+st.subheader("The N°1 payment platform in Argentina" )
 
 cbu = st.text_input(label="CBU:")
-login = st.button("Ingresar ➡")
+login = st.button("Enter ➡")
 if login:
-    url = "http://127.0.0.1:8000/users/" + cbu
+    url = "http://127.0.0.1:8000/users/cbu/" + cbu
     res = requests.get(url)
-    if res.status_code != 200:
-        st.warning("Usuario no encontrado. Por favor verifique el CBU ingresado.")
+    res_dict = json.loads(res.text)
+    if res.status_code != 200 or res_dict["data"] is None:
+        st.warning("User not found. Please verify the CBU.")
     else:
         st.session_state.cbu = cbu
-        res_dict = json.loads(res.text)
-        name = res_dict["name"]
-        welcome_msg = "Hola, " + name + "!"
+        name = res_dict["data"]["name"]
+        cuit = res_dict["data"]["cuit"]
+        alias = res_dict["data"]["alias"]
+        st.session_state.alias = alias
+        welcome_msg = "Hello, " + name + "!"
+        cuit_msg = "CUIT: " + cuit
+        alias_msg = "Alias: " + alias
         st.write(welcome_msg)
-
-if st.session_state.cbu:
-    cols = st.columns(2)
-    with cols[0]:
-        balance = st.button("Consultar Balance 💰")
-        if balance:
-            st.session_state.cbu = cbu
-            url = "http://127.0.0.1:8000/users/" + st.session_state.cbu + "/balance"
-            amount = requests.get(url)
-            st.write("$" + amount.text)
-    cols = st.columns(2)
-    with cols[0]:
-        st.session_state.to_cbu = st.text_input("CBU Destinatario:")
-    with cols[1]:
-        st.session_state.amount = st.text_input("Monto:")
-    pay = st.button("Pagar 💵")
-    if pay:
-        url_pay = "http://127.0.0.1:8000/transactions/" + st.session_state.cbu + "/pay"
-        url_charge = "http://127.0.0.1:8000/transactions/" + st.session_state.to_cbu + "/charge"
-        params = {"amount": float(st.session_state.amount)}
-        res_pay = requests.post(url_pay, params=params)
-        res_charge = requests.post(url_charge, params=params)
-        if res_pay.status_code != 200 or res_charge.status_code != 200:
-            st.warning("Pago no realizado. Consultar saldo y/o verifique el CBU del destinatario.")
+        st.write(cuit_msg)
+        st.write(alias_msg)
+        url = "http://127.0.0.1:8000/users/" + st.session_state.cbu + "/balance"
+        res = requests.get(url)
+        res_dict = json.loads(res.text)
+        balance = res_dict["data"]
+        if balance is None:
+            st.write("Balance: $0" )
         else:
-            st.success("Pago realizado!")
+            st.write("Balance: $" + str(balance))
+        with st.expander("Transaction History"):
+            url_hist = "http://127.0.0.1:8000/transactions/" + st.session_state.cbu + "/history"
+            res_hist = requests.get(url_hist)
+            hist_dict = json.loads(res_hist.text)
+            history = hist_dict["data"]
+            if history is None:
+                st.write("No transactions")
+            else:
+                for i in range(0, len(hist_dict["data"])):
+                    transaction = hist_dict["data"][i]
+                    transactions["Date"].append(transaction["date"])
+                    transactions["Alias"].append(transaction["to_user"]["alias"])
+                    transactions["Name"].append(transaction["to_user"]["name"])
+                    transactions["CBU"].append(transaction["to_user"]["cbu"])
+                    transactions["Amount"].append(transaction["amount"])
+                transactions_df = pd.DataFrame.from_dict(transactions)
+                st.table(transactions_df)
+                

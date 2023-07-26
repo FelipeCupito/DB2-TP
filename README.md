@@ -36,6 +36,12 @@ This will start the **bank 2** application on port 8090.
 ```
 This will start the pixie application on port 8000.
 
+4. Start the frontend application by running the following commands:
+```bash
+ ./run_app.sh
+```
+this will start the frontend application on port 8501
+
 ## Stopping the application
 To stop the application execution, simply press Ctrl + C in the terminal where the application is running. This will stop the FastAPI development server.
 
