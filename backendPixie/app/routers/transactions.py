@@ -19,6 +19,7 @@ def pay_by_cbu(cbu_transaction: CbuTransaction):
         return send_error(msg)
 
     transaction = transactions_dao.pay_by_cbu(cbu_transaction)
+
     return send_data(transaction)
 
 

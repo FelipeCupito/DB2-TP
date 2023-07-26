@@ -4,7 +4,7 @@ Pixie is a project that utilizes FastAPI and Docker to create and run a web API 
 ## Prerequisites
 Before proceeding, make sure you have the following programs installed on your machine:
 - Docker: [Installation Guide](https://docs.docker.com/get-docker/)
-- Python 3.8: [Installation Guide](https://www.python.org/downloads/)
+- Python 3.11: [Installation Guide](https://www.python.org/downloads/)
 ## Setup Instructions
 Grant execution permissions to the setup scripts:
 ```bash
@@ -13,35 +13,36 @@ chmod +x setup.sh
 ```
 
 ## Running the application
-1. Run the `setup.sh` script to add permissions to run the script, build the Docker image, and run the container:
+To run the application, follow these steps. Please note that each application (bank1, bank2, and pixie) needs to be executed in different terminals:
+1. Run the setup.sh script to add necessary permissions, build the Docker images, and run the containers:
 ```bash
 sudo ./setup.sh
 ```
-2. Start the bank1 application by running the `run_bank1.sh` script:
+2. Open a new terminal and run the `run_bank1.sh` script to start **bank1**:
 ```bash
  ./run_bank1.sh
 ```
-this will start the bank1 application on port 8080
+This will start the **bank1** application on port 8080.
 
-3. Start the bank2 application by running the `run_bank2.sh` script:
+3. Open another terminal and run the `run_bank2.sh` script to start **bank2**:
 ```bash
  ./run_bank2.sh
 ```
-this will start the bank2 application on port 8090
+This will start the **bank 2** application on port 8090.
 
-4. Start the pixie application by running the `run_pixie.sh` script:
+4. Finally, open one more terminal and run the `run_pixie.sh` script to start **Pixie**:
 ```bash
  ./run_pixie.sh
 ```
-this will start the pixie application on port 8000
+This will start the pixie application on port 8000.
 
 ## Stopping the application
-If you wish to stop the application execution, simply press `Ctrl + C` in the terminal where the application is running. This will stop the FastAPI development server.
+To stop the application execution, simply press Ctrl + C in the terminal where the application is running. This will stop the FastAPI development server.
 
 ## Additional Notes
 To change the port of the applications, navigate to the corresponding `run_bank1.sh`, `run_bank2.sh`, or `run_pixie.sh` file. Inside the file, you'll find a line similar to `python3 main.py 8080 5432 "data/user1.json"`. Change the value of the first parameter passed to main.py to modify the port. For example, if you want bank 1 to run on port 8081, modify the file to `python3 main.py 8081 5432 "data/user1.json"`.
 
 ## Authors
-- 60058 - Felipe Cupitó
-- 60072 - Malena Vasquez Currie
-- 61278 - Sol Victoria Anselmo
+- 60058 - Felipe Cupitó.
+- 60072 - Malena Vasquez Currie.
+- 61278 - Sol Victoria Anselmo.

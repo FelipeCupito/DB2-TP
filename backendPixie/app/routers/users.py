@@ -22,26 +22,32 @@ def create_user(new_user: NewUser):
 
 
 @router.get("/cbu/{cbu}", response_model=Response)
-def read_user_by_cbu(cbu: str):
+def read_user_by_cbu(cbu: str, password: str):
     user = users_dao.get_by_cbu(cbu)
     if user is None:
         return send_error("User not found")
+    if not user.pass_matches(password):
+        return send_error("Password does not match")
     return send_data(user)
 
 
 @router.get("/alias/{alias_type}", response_model=Response)
-def read_user_by_alias(alias: str):
+def read_user_by_alias(alias: str, password: str):
     user = users_dao.get_by_alias(alias)
     if user is None:
         return send_error("User not found")
+    if not user.pass_matches(password):
+        return send_error("Password does not match")
     return send_data(user)
 
 
 @router.get("/{cbu}/balance", response_model=Response)
-def get_balance(cbu: str):
+def get_balance(cbu: str, password: str):
     user = users_dao.get_by_cbu(cbu)
     if user is None:
         return send_error("User not found")
+    if not user.pass_matches(password):
+        return send_error("Password does not match")
 
     status, balance = banks_handler.get_user_balance(user)
     if not status:

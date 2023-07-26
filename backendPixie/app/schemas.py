@@ -11,6 +11,19 @@ PATTERN_CUIT = r'^(20|23|24|25|26|27|30|33|34)[0-9]{8}[0-9]{1}$'
 PATTERN_EMAIL = r'^[\w.-]+@[\w.-]+.\w+$'
 
 
+class UserBase(BaseModel):
+    id: str
+    password: str
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "id": "cbu or alias",
+                "password": "myPass",
+            }
+        }
+
+
 class NewUser(BaseModel):
     alias_type: AliasType
     alias: str
@@ -68,6 +81,7 @@ class AliasTransaction(BaseModel):
     password: str
     to_alias: str
     amount: float
+    description: Optional[str] = None
 
     class Config:
         json_schema_extra = {
@@ -76,6 +90,7 @@ class AliasTransaction(BaseModel):
                 "to_alias": "sol2001",
                 "amount": 100,
                 "password": "myPass",
+                "description": "payment description"
             }
         }
 
@@ -86,6 +101,7 @@ class CbuTransaction(BaseModel):
     password: str
     to_cbu: str
     amount: float
+    description: Optional[str] = None
 
     class Config:
         json_schema_extra = {
@@ -93,7 +109,8 @@ class CbuTransaction(BaseModel):
                 "from_cbu": "1115698756125879562145",
                 "to_cbu": "2587965879254687952454",
                 "amount": 100,
-                "password": "myPass"
+                "password": "myPass",
+                "description": "payment description"
             }
         }
 
@@ -111,12 +128,41 @@ class UserHistory(BaseModel):
             cbu=user.cbu,
         )
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "alias": "mauri658",
+                "name": "Mauro Garcia",
+                "cbu": "1115698756125879562145",
+            }
+        }
+
 
 class TransactionHistory(BaseModel):
     date: datetime
     from_user: UserHistory
     to_user: UserHistory
     amount: int
+    description: Optional[str] = None
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "date": "2021-06-01T12:00:00",
+                "from_user": {
+                    "alias": "mauri658",
+                    "name": "Mauro Garcia",
+                    "cbu": "1115698756125879562145",
+                },
+                "to_user": {
+                    "alias": "sol2001",
+                    "name": "Sol Garcia",
+                    "cbu": "2587965879254687952454",
+                },
+                "amount": 100,
+                "description": "payment description"
+            }
+        }
 
 
 class Response(BaseModel):

@@ -4,13 +4,20 @@ from app.schemas import CbuTransaction, AliasTransaction
 from app.crud import users_dao
 from app.models import User
 
+from app.crud import transactions_dao
+
 HTTP_PROTOCOL = "http://"
 HOST = "127.0.0.1"
 
 
 def get_user_balance(user: User) -> (bool, float):
     url = HTTP_PROTOCOL + HOST + ":" + str(user.bank_port) + "/users" + "/" + user.cbu + "/balance"
-    response = requests.get(url)
+
+    try:
+        response = requests.get(url)
+    except requests.exceptions:
+        return False, 0
+
     if response.status_code != 200:
         return False, 0
 
@@ -42,6 +49,35 @@ def pay_by_alias(alias_transaction: AliasTransaction) -> (bool, str):
     return pay_by_cbu(cbu_transaction)
 
 
+def _pay_back(cbu_transaction: CbuTransaction) -> (bool, str):
+    """
+    Pays back the transaction
+    le devulve la plata al origen, pixie se hace pasar por un usuario
+    """
+    # buscos el uruarios origen
+    from_user = users_dao.get_by_cbu(cbu_transaction.from_cbu)
+
+    # creo la url para la api del banco del usuario origen
+    from_url = HTTP_PROTOCOL + HOST + ":" + str(from_user.bank_port) + "/transactions" + "/charge"
+
+    # creo el payload para la api del banco del usuario origen
+    from_payload = {
+        "cbu": cbu_transaction.from_cbu,
+        "amount": cbu_transaction.amount,
+    }
+
+    # Hago la llamada a la api del banco del usuario origen
+    try:
+        from_response = requests.post(from_url, data=json.dumps(from_payload))
+    except requests.exceptions:
+        return False, "Error in from_bank"
+
+    if from_response.status_code != 200:
+        return False, "Error in from_bank"
+
+    return True, "Success"
+
+
 def pay_by_cbu(cbu_transaction: CbuTransaction) -> (bool, str):
     from_user = users_dao.get_by_cbu(cbu_transaction.from_cbu)
     to_user = users_dao.get_by_cbu(cbu_transaction.to_cbu)
@@ -66,12 +102,22 @@ def pay_by_cbu(cbu_transaction: CbuTransaction) -> (bool, str):
         "amount": cbu_transaction.amount,
     }
 
-    from_response = requests.post(from_url, data=json.dumps(from_payload))
-    if from_response.status_code != 200:
-        return False, "Error in from bank"
+    try:
+        from_response = requests.post(from_url, data=json.dumps(from_payload))
+    except requests.exceptions:
+        return False, "Error in from_bank"
 
-    to_response = requests.post(to_url2, data=json.dumps(to_payload))
+    if from_response.status_code != 200:
+        return False, "Error in from_bank"
+
+    try:
+        to_response = requests.post(to_url2, data=json.dumps(to_payload))
+    except requests.exceptions:
+        _pay_back(cbu_transaction)
+        return False, "Error in to_bank"
+
     if to_response.status_code != 200:
-        return False, "Error in to bank"
+        _pay_back(cbu_transaction)
+        return False, "Error in to_bank"
 
     return True, "Success"
