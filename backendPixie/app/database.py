@@ -27,10 +27,8 @@ def _create_banks_accounts():
 
     bank1 = Bank(**bank1_data)
     bank2 = Bank(**bank2_data)
-    pixie = Bank(**pixie_data)
     db[COLLECTIONS_BANK].insert_one(bank1.model_dump())
     db[COLLECTIONS_BANK].insert_one(bank2.model_dump())
-    db[COLLECTIONS_BANK].insert_one(pixie.model_dump())
 
 
 def _create_transactions():

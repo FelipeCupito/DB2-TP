@@ -15,7 +15,7 @@ def get_user_balance(user: User) -> (bool, float):
 
     try:
         response = requests.get(url)
-    except requests.exceptions:
+    except requests.exceptions.RequestException:
         return False, 0
 
     if response.status_code != 200:
@@ -69,7 +69,7 @@ def _pay_back(cbu_transaction: CbuTransaction) -> (bool, str):
     # Hago la llamada a la api del banco del usuario origen
     try:
         from_response = requests.post(from_url, data=json.dumps(from_payload))
-    except requests.exceptions:
+    except requests.exceptions.RequestException:
         return False, "Error in from_bank"
 
     if from_response.status_code != 200:
@@ -104,7 +104,7 @@ def pay_by_cbu(cbu_transaction: CbuTransaction) -> (bool, str):
 
     try:
         from_response = requests.post(from_url, data=json.dumps(from_payload))
-    except requests.exceptions:
+    except requests.exceptions.RequestException:
         return False, "Error in from_bank"
 
     if from_response.status_code != 200:
@@ -112,7 +112,7 @@ def pay_by_cbu(cbu_transaction: CbuTransaction) -> (bool, str):
 
     try:
         to_response = requests.post(to_url2, data=json.dumps(to_payload))
-    except requests.exceptions:
+    except requests.exceptions.RequestException:
         _pay_back(cbu_transaction)
         return False, "Error in to_bank"
 
