@@ -12,7 +12,7 @@ HOST = "127.0.0.1"
 
 def get_user_balance(user: User) -> (bool, float):
     url = HTTP_PROTOCOL + HOST + ":" + str(user.bank_port) + "/users" + "/" + user.cbu + "/balance"
-
+    
     try:
         response = requests.get(url)
     except requests.exceptions.RequestException:

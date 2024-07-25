@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from app.crud import transactions_dao, users_dao
 from app.routers import banks_handler
+
 from app.routers.utils import send_data, send_error
 from app.schemas import Response, CbuTransaction, AliasTransaction
 
@@ -13,7 +14,9 @@ def pay_by_cbu(cbu_transaction: CbuTransaction):
         return send_error("from CBU does not exist")
     if not users_dao.check_cbu_exist(cbu_transaction.to_cbu):
         return send_error("to CBU does not exist")
-
+    if cbu_transaction.from_cbu == cbu_transaction.to_cbu:
+        return send_error("from CBU and to CBU cannot be the same") 
+    
     status, msg = banks_handler.pay_by_cbu(cbu_transaction)
     if not status:
         return send_error(msg)

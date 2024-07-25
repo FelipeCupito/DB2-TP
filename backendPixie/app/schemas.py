@@ -74,7 +74,6 @@ class NewUser(BaseModel):
             }
         }
 
-
 class AliasTransaction(BaseModel):
     date: datetime = datetime.now()
     from_alias: str
@@ -93,7 +92,7 @@ class AliasTransaction(BaseModel):
                 "description": "payment description"
             }
         }
-
+        
 
 class CbuTransaction(BaseModel):
     date: datetime = datetime.now()

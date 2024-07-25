@@ -54,3 +54,28 @@ def get_balance(cbu: str, password: str):
         return send_error("Error in bank")
 
     return send_data(balance)
+
+# New endpoints without password for public user details
+@router.get("/public/cbu/{cbu}", response_model=Response)
+def get_public_user_by_cbu(cbu: str):
+    user = users_dao.get_by_cbu(cbu)
+    if user is None:
+        return send_error("User not found")
+    public_data = {
+        "name": user.name,
+        "cuit": user.cuit,
+        "alias": user.alias
+    }
+    return send_data(public_data)
+
+@router.get("/public/alias/{alias}", response_model=Response)
+def get_public_user_by_alias(alias: str):
+    user = users_dao.get_by_alias(alias)
+    if user is None:
+        return send_error("User not found")
+    public_data = {
+        "name": user.name,
+        "cuit": user.cuit,
+        "alias": user.alias
+    }
+    return send_data(public_data)
