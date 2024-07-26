@@ -16,6 +16,8 @@ def pay_by_cbu(cbu_transaction: CbuTransaction):
         return send_error("to CBU does not exist")
     if cbu_transaction.from_cbu == cbu_transaction.to_cbu:
         return send_error("from CBU and to CBU cannot be the same") 
+    if cbu_transaction.amount <= 0:
+        return send_error("Amount must be greater than 0")
     
     status, msg = banks_handler.pay_by_cbu(cbu_transaction)
     if not status:
@@ -32,6 +34,10 @@ def pay_by_alias(alias_transaction: AliasTransaction):
         return send_error("from Alias does not exist")
     if not users_dao.check_alias_exist(alias_transaction.to_alias):
         return send_error("to Alias does not exist")
+    if alias_transaction.from_alias == alias_transaction.to_alias:
+        return send_error("from Alias and to Alias cannot be the same")
+    if alias_transaction.amount <= 0:
+        return send_error("Amount must be greater than 0")
 
     status, msg = banks_handler.pay_by_alias(alias_transaction)
     if not status:
@@ -41,9 +47,17 @@ def pay_by_alias(alias_transaction: AliasTransaction):
     return send_data(transaction)
 
 
+# @router.get("/{cbu}/history", response_model=Response)
+# def get_user_history(cbu: str):
+#     if not users_dao.check_cbu_exist(cbu):
+#         return send_error("CBU does not exist")
+#     history = transactions_dao.get_user_history(cbu)
+#     return send_data(history)
+
 @router.get("/{cbu}/history", response_model=Response)
-def get_user_history(cbu: str):
-    if not users_dao.check_cbu_exist(cbu):
-        return send_error("CBU does not exist")
-    history = transactions_dao.get_user_history(cbu)
-    return send_data(history)
+def get_transaction_history(cbu: str):
+    sent_transactions = transactions_dao.get_sent_transactions(cbu)
+    received_transactions = transactions_dao.get_received_transactions(cbu)
+    transactions = sent_transactions + received_transactions
+    #transactions.sort(key=lambda x: x["date"], reverse=True)  # Ordenar por fecha, más reciente primero
+    return send_data(transactions)

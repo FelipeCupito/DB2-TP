@@ -27,7 +27,7 @@ def get_user_info(cbu: str, db: Session = Depends(get_db)):
 def get_user_balance(cbu: str, db: Session = Depends(get_db)):
     try:
         balance = users_dao.get_balance(cbu, db)
-        if balance:
+        if balance is not None:
             return balance
         else:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Account not found")

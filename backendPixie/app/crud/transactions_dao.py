@@ -3,6 +3,7 @@ from typing import Optional
 from app.database import transactions_collection as db
 from app.models import Transaction
 from app.schemas import CbuTransaction, AliasTransaction, TransactionHistory, UserHistory
+from bson import ObjectId
 
 from app.crud import users_dao
 
@@ -43,6 +44,43 @@ def get_user_history(cbu: str) -> list[TransactionHistory]:
             )
         )
     return to_return
+
+def get_sent_transactions(cbu: str):
+    # Consulta MongoDB para obtener transacciones enviadas
+    to_return = []
+    sent_transactions = db.find({'from_cbu': cbu})
+    for transaction in sent_transactions:
+        from_user = users_dao.get_by_cbu(transaction['from_cbu'])
+        to_user = users_dao.get_by_cbu(transaction['to_cbu'])
+        to_return.append(
+            TransactionHistory(
+                from_user=UserHistory.from_user(from_user),
+                to_user=UserHistory.from_user(to_user),
+                amount=transaction['amount'],
+                date=transaction['date'],
+
+            )
+        )
+    return to_return
+
+def get_received_transactions(cbu: str):
+    # Consulta MongoDB para obtener transacciones recibidas
+    to_return = []
+    received_transactions = db.find({"to_cbu": cbu})
+    for transaction in received_transactions:
+        from_user = users_dao.get_by_cbu(transaction['from_cbu'])
+        to_user = users_dao.get_by_cbu(transaction['to_cbu'])
+        to_return.append(
+            TransactionHistory(
+                from_user=UserHistory.from_user(from_user),
+                to_user=UserHistory.from_user(to_user),
+                amount=transaction['amount'],
+                date=transaction['date'],
+
+            )
+        )
+    return to_return
+
 
 
 def _get_transaction_from_alias(transaction: AliasTransaction) -> Transaction:
